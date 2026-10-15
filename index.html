@@ -6,7 +6,7 @@
 <title>Calculadora de precios · Aprende IA de Cero</title>
 <meta name="description" content="¿Cuánto le cobro a mi cliente? Calcula el precio de una página web, app, chatbot o automatización según el país del cliente, lo que lleva y tu experiencia. Gratis.">
 <meta property="og:title" content="Calculadora de precios · Aprende IA de Cero">
-<meta property="og:description" content="Responde 5 preguntas y sabe cuánto cobrar por tu proyecto, ajustado a tu país y a la era de la IA.">
+<meta property="og:description" content="Responde 6 preguntas y sabe cuánto cobrar por tu proyecto, ajustado a tu país y a la era de la IA.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://calculadora.aprendeiadecero.com/">
 <meta name="theme-color" content="#E8391E">
@@ -173,7 +173,7 @@ footer.src a{color:var(--ink)}
 <div class="wrap">
   <header class="top"><a class="brand" href="https://aprendeiadecero.com"><svg viewBox="-2 -2 104 104" aria-hidden="true"><path fill="#E8391E" d="M2 96L73 4L73 29L98 29L98 96L79 96L79 29.92L54.24 62L67.24 59L24 96ZM79 23L79 4L98 4L98 23L79 23Z"/></svg><span>Aprende <b>IA</b> de Cero</span></a><span class="tag">Calculadora de precios</span></header>
   <h1><span class="r">¿Cuánto le cobro</span> <span class="o">a mi cliente?</span></h1>
-  <p class="lede">Responde 5 preguntas sencillas. A la derecha vas viendo cómo cambia el precio con cada respuesta, y al final te explicamos de dónde sale cada número.</p>
+  <p class="lede">Responde 6 preguntas sencillas. A la derecha vas viendo cómo cambia el precio con cada respuesta, y al final te explicamos de dónde sale cada número.</p>
   <div class="example">
     <button class="btn ghost" type="button" id="demo">Ver un ejemplo: app de reservas para una barbería en Colombia</button>
     <button class="btn ghost" type="button" id="restart">Empezar de cero</button>
@@ -191,7 +191,9 @@ footer.src a{color:var(--ink)}
       <dt>Tarifa por hora</dt><dd>Lo que vale una hora de tu trabajo. Partimos de lo que gana un desarrollador web en Estados Unidos (uno que empieza o uno con experiencia) y la ajustamos según lo caro o barato que es el país del cliente.</dd>
       <dt>Piso</dt><dd>Lo mínimo que puedes cobrar sin perder: tus horas más lo que pagas para arrancar (como el dominio). Por debajo de esto, trabajas gratis.</dd>
       <dt>Ganancia</dt><dd>Lo que sumas encima del piso para que te quede algo. Empezamos con 30%.</dd>
-      <dt>Mensualidad</dt><dd>Lo que el cliente te paga cada mes para que la app siga funcionando: los servicios (hosting, base de datos, IA) más tus horas de soporte.</dd>
+      <dt>Mensualidad</dt><dd>Lo que el cliente te paga cada mes para que la app siga funcionando. No es por el alojamiento: es por lo que haces cada mes (revisar, arreglar, responder) más los servicios que tú pagas por él (hosting, dominio, IA, minutos de llamada). Si no los metes en la mensualidad, salen de tu bolsillo.</dd>
+      <dt>Plan de mantenimiento</dt><dd>Qué tanto cuidas la app cada mes. Básico: que esté en pie. Estándar: además la revisas cada semana y haces ajustes pequeños. Prioritario: respondes el mismo día. Más cuidado, más horas, más mensualidad.</dd>
+      <dt>Pago por uso</dt><dd>Algunos servicios cuestan cada vez que se usan: cada minuto de llamada del agente de voz, cada conversación del chatbot, cada aviso por WhatsApp. La mensualidad trae una cantidad incluida; si el cliente pasa de ahí, paga cada uso extra. Así, si su negocio crece, tu costo no se come tu ganancia.</dd>
       <dt>Comisión</dt><dd>Lo que se queda la plataforma de pago (Stripe, Mercado Pago, PayPal…) de cada pago que recibes.</dd>
       <dt>¿Y la IA no bajó los precios?</dt><dd>En parte, sí: lo sencillo (una página web básica) se paga menos, porque hoy mucha gente la hace sola. Por eso la calculadora baja tu hora con el «ajuste por IA»: 30% si el proyecto es sencillo, 20% si es mediano y 10% si es complejo, porque lo complejo todavía se paga bien. Puedes cambiar ese porcentaje en «Ajustar los números». Lo que el cliente paga ahora no es el código: es que funcione, sea seguro, cumpla las reglas y alguien lo cuide cada mes. Si en tu país cobran menos, pon ese precio en «¿Cuánto cobran otros?» y compara.</dd>
       <dt>Complejidad</dt><dd>Qué tanto trabajo lleva el proyecto. Mientras más cosas pide el cliente, más horas, y más sube el precio.</dd>
@@ -206,7 +208,9 @@ footer.src a{color:var(--ink)}
       <li>Monedas locales: tipo de cambio oficial promedio 2025, Banco Mundial (aproximado).</li>
       <li>Stripe: 2.9% + $0.30 por tarjeta nacional, +1.5% tarjetas internacionales. <a href="https://stripe.com/pricing" target="_blank" rel="noopener">stripe.com/pricing</a> · <a href="https://stripe.com/global" target="_blank" rel="noopener">stripe.com/global</a></li>
       <li>Mercado Pago opera en Argentina, Brasil, Chile, Colombia, México, Perú y Uruguay; su comisión cambia por país y plazo.</li>
-      <li>Netlify, Firebase, Resend y Claude: sus páginas de precios oficiales (14 oct 2026). Dominio .com: precios de Cloudflare Registrar en cfdomainpricing.com.</li>
+      <li>Mantenimiento, precios oficiales (oct 2026): Netlify Personal $9 al mes; Firebase y Resend gratis dentro de sus límites; <a href="https://platform.claude.com/docs/en/about-claude/pricing" target="_blank" rel="noopener">Claude Haiku 5.5</a> $0.10 por millón de tokens de entrada y $0.50 de salida; <a href="https://elevenlabs.io/pricing/api" target="_blank" rel="noopener">ElevenLabs Agents</a> $0.08 el minuto; <a href="https://www.twilio.com/en-us/voice/pricing/us" target="_blank" rel="noopener">Twilio</a> $0.0085 el minuto recibido y $1.15 al mes el número (EE.UU.); <a href="https://n8n.io/pricing/" target="_blank" rel="noopener">n8n</a> Starter 20 € al mes (2.500 ejecuciones) y Pro 50 € (10.000), pago anual; <a href="https://business.whatsapp.com/products/platform-pricing" target="_blank" rel="noopener">WhatsApp</a>, mensaje de utilidad (aviso) por país: Colombia $0.0008, México $0.0085, Norteamérica $0.0034, España $0.0200, Perú $0.0300, Chile $0.0200, Argentina $0.0260, Brasil $0.0068, resto de Latinoamérica $0.0113. Responder dentro de la conversación que abrió el cliente es gratis.</li>
+      <li>Cuánto gasta cada uso (estimado de Aprende IA de Cero): una conversación del chatbot ≈ 16.000 tokens de entrada y 1.200 de salida; una respuesta del asistente ≈ 3.000 y 500. Horas de mantenimiento por servicio, planes (×1, ×2, ×3) y el pago por uso a 3 veces el costo: también de Aprende IA de Cero. Cámbialos en «Ajustar los números».</li>
+      <li>Dominio .com: precios de Cloudflare Registrar en cfdomainpricing.com.</li>
       <li>Horas por tipo de trabajo y por cada extra: ejemplos de Aprende IA de Cero trabajando con IA; incluyen reuniones con el cliente, diseño, pruebas, publicación y capacitación. Cámbialas a tu realidad en «Ajustar los números».</li>
       <li>Ajuste por IA (30% / 20% / 10% según la complejidad): porcentaje de Aprende IA de Cero, no un dato medido. La dirección sí está medida: <a href="https://www.upwork.com/research/generative-ai-work-value" target="_blank" rel="noopener">Upwork</a> encontró que la IA bajó lo que se paga por trabajo sencillo y subió lo que se paga por trabajo complejo.</li>
       <li>Esto es una guía para pensar tu precio, no una regla. Tú decides el número final.</li>
@@ -253,32 +257,76 @@ const PAY={
  usdt:{n:'USDT (Binance Pay)',d:'dólar digital',fee:null,fix:null,note:'En Venezuela mucha gente ya tiene USDT. Revisa la comisión de tu plataforma.'},
 };
 const TYPES=[
- {id:'web',n:'Página web',d:'una web para mostrar el negocio',h:24,inc:["Diseño a la medida del negocio (hasta 5 secciones)", "Versión para celular", "Botón de WhatsApp o formulario de contacto", "Dominio y publicación en internet", "Lo básico para aparecer en Google", "Candado de seguridad (https)"]},
- {id:'shop',n:'Tienda en línea',d:'catálogo y pedidos',h:60,inc:["Catálogo de productos con fotos y precios", "Carrito de compras", "Pedidos que le llegan al dueño", "Control de inventario básico", "Opciones de entrega o retiro en tienda", "Versión para celular"]},
- {id:'auto',n:'Automatización',d:'correos, avisos y tareas que se hacen solas',h:20,inc:["Revisión del proceso que se va a automatizar", "Conexión entre las herramientas que ya usa", "Correos o avisos que salen solos", "Pruebas con casos reales", "Instrucciones para el dueño"]},
- {id:'bot',n:'Chatbot o agente',d:'responde clientes por WhatsApp o en la web',h:36,inc:["Respuestas con la información del negocio", "Conexión a WhatsApp o a la web", "Pasa la conversación a una persona cuando hace falta", "Guarda los datos de los clientes interesados", "Pruebas y ajustes de las respuestas"]},
- {id:'voice',n:'Agente de voz',d:'contesta llamadas',h:56,inc:["Voz natural que contesta llamadas", "Guion con la información del negocio", "Toma citas o pedidos por teléfono", "Pasa la llamada a una persona cuando hace falta", "Resumen de cada llamada"]},
- {id:'app',n:'App a medida',d:'reservas, pedidos, turnos',h:80,inc:["Pantallas a la medida (reservas, pedidos o turnos)", "Base de datos de clientes", "Calendario o lista de pedidos", "Versión para celular", "Publicación en internet", "Capacitación al dueño"]},
- {id:'crm',n:'CRM de clientes',d:'contactos y seguimiento de ventas',h:90,inc:["Lista de clientes con su historial", "Etapas de venta (nuevo, en contacto, cliente)", "Notas y tareas de seguimiento", "Recordatorios de a quién contactar", "Búsqueda y filtros", "Importar los contactos que ya tiene"]},
- {id:'report',n:'Panel de reportes',d:'ventas y números del negocio',h:48,inc:["Conexión a los datos de ventas", "Gráficas de ventas, gastos y clientes", "Filtros por fecha", "Los números clave a la vista", "Exportar a Excel o PDF"]},
- {id:'panel',n:'Sistema completo',d:'para manejar todo el negocio',h:140,inc:["Todo lo de una app a medida", "Usuarios con permisos (dueño y empleados)", "Inventario, ventas y clientes en un solo lugar", "Reportes del negocio", "Capacitación al equipo", "Manual de uso"]},
+ {id:'web',mh:1.5,host:'free',dom:1,n:'Página web',d:'una web para mostrar el negocio',h:24,inc:["Diseño a la medida del negocio (hasta 5 secciones)", "Versión para celular", "Botón de WhatsApp o formulario de contacto", "Dominio y publicación en internet", "Lo básico para aparecer en Google", "Candado de seguridad (https)"]},
+ {id:'shop',mh:3,host:'netlify',dom:1,n:'Tienda en línea',d:'catálogo y pedidos',h:60,inc:["Catálogo de productos con fotos y precios", "Carrito de compras", "Pedidos que le llegan al dueño", "Control de inventario básico", "Opciones de entrega o retiro en tienda", "Versión para celular"]},
+ {id:'auto',mh:2,host:'n8n',use:'exec',n:'Automatización',d:'correos, avisos y tareas que se hacen solas',h:20,inc:["Revisión del proceso que se va a automatizar", "Conexión entre las herramientas que ya usa", "Correos o avisos que salen solos", "Pruebas con casos reales", "Instrucciones para el dueño"]},
+ {id:'bot',mh:3,host:'netlify',use:'conv',n:'Chatbot o agente',d:'responde clientes por WhatsApp o en la web',h:36,inc:["Respuestas con la información del negocio", "Conexión a WhatsApp o a la web", "Pasa la conversación a una persona cuando hace falta", "Guarda los datos de los clientes interesados", "Pruebas y ajustes de las respuestas"]},
+ {id:'voice',mh:3,host:'voice',use:'min',n:'Agente de voz',d:'contesta llamadas',h:56,inc:["Voz natural que contesta llamadas", "Guion con la información del negocio", "Toma citas o pedidos por teléfono", "Pasa la llamada a una persona cuando hace falta", "Resumen de cada llamada"]},
+ {id:'app',mh:3,host:'netlify',dom:1,n:'App a medida',d:'reservas, pedidos, turnos',h:80,inc:["Pantallas a la medida (reservas, pedidos o turnos)", "Base de datos de clientes", "Calendario o lista de pedidos", "Versión para celular", "Publicación en internet", "Capacitación al dueño"]},
+ {id:'crm',mh:3,host:'netlify',dom:1,n:'CRM de clientes',d:'contactos y seguimiento de ventas',h:90,inc:["Lista de clientes con su historial", "Etapas de venta (nuevo, en contacto, cliente)", "Notas y tareas de seguimiento", "Recordatorios de a quién contactar", "Búsqueda y filtros", "Importar los contactos que ya tiene"]},
+ {id:'report',mh:2,host:'netlify',dom:1,n:'Panel de reportes',d:'ventas y números del negocio',h:48,inc:["Conexión a los datos de ventas", "Gráficas de ventas, gastos y clientes", "Filtros por fecha", "Los números clave a la vista", "Exportar a Excel o PDF"]},
+ {id:'panel',mh:6,host:'netlify',dom:1,n:'Sistema completo',d:'para manejar todo el negocio',h:140,inc:["Todo lo de una app a medida", "Usuarios con permisos (dueño y empleados)", "Inventario, ventas y clientes en un solo lugar", "Reportes del negocio", "Capacitación al equipo", "Manual de uso"]},
 ];
-// m=1: trabaja todos los meses, suma media hora de soporte
+// m=1: trabaja todos los meses, suma una hora de mantenimiento; use: se paga por uso
 const FEATURES=[
  {id:'login',n:'Inicio de sesión',d:'cada usuario entra con su cuenta',h:12},
  {id:'pay',n:'Pagos en línea',d:'cobrar dentro de la app',h:16},
- {id:'ai',n:'Asistente con IA',d:'responde o escribe solo',h:20,m:1},
+ {id:'ai',n:'Asistente con IA',d:'responde o escribe solo',h:20,m:1,use:'ai'},
  {id:'connect',n:'Conectar con otro sistema',d:'caja, CRM, hojas de cálculo',h:20,m:1},
- {id:'notify',n:'Avisos por WhatsApp o correo',d:'recordatorios y confirmaciones',h:10,m:1},
+ {id:'notify',n:'Avisos por WhatsApp o correo',d:'recordatorios y confirmaciones',h:10,m:1,use:'msg'},
  {id:'admin',n:'Panel para el dueño',d:'para que él vea y cambie todo',h:16},
  {id:'multi',n:'Varios locales',d:'sucursales o sedes',h:12},
  {id:'files',n:'Subir fotos o archivos',d:'imágenes, PDF',h:6},
  {id:'reports',n:'Reportes y gráficas',d:'números del negocio',h:12},
  {id:'lang',n:'Varios idiomas',d:'español, inglés…',h:10},
 ];
-const STEPS=['País','Qué haces','Qué lleva','Pago','Valor','Resultado'];
-const DEF={step:0,level:'start',types:[],feats:[],country:null,pay:null,foreign:false,value:null,price:null,market:null,ov:{}};
+const STEPS=['País','Qué haces','Qué lleva','Mensualidad','Pago','Valor','Resultado'];
+const DEF={step:0,level:'start',types:[],feats:[],plan:'std',vol:1,country:null,pay:null,foreign:false,value:null,price:null,market:null,ov:{}};
 const fresh=()=>JSON.parse(JSON.stringify(DEF));
+// ===== Mensualidad: servicios que pagas tú + uso incluido + tus horas cuidándola + ganancia =====
+// Precios oficiales, oct 2026 (ver «De dónde salen los números»)
+const DOMAIN_Y=10.46, NETLIFY=9, PHONE=1.15, EUR=0.885;
+const N8N=[[2500,20/EUR,'n8n Starter'],[10000,50/EUR,'n8n Pro']];
+// WhatsApp, mensaje de utilidad (un aviso que manda el negocio), USD por mensaje
+const WA={COL:.0008,MEX:.0085,USA:.0034,PRI:.0034,ESP:.02,PER:.03,CHL:.02,ARG:.026,BRA:.0068},WA_REST=.0113;
+// Claude Haiku 5.5: $0.10 por millón de tokens de entrada, $0.50 de salida
+const tok=(i,o)=>i*0.10/1e6+o*0.50/1e6;
+// lv: cuánto se usa al mes (poco, normal, mucho)
+const USE={
+ conv:{n:'conversaciones del chatbot',u:'conversación',p:'conversaciones',lv:[200,500,1500],cost:()=>tok(16000,1200),src:'IA (Claude Haiku 5.5)'},
+ min:{n:'minutos de llamada',u:'minuto',p:'minutos',lv:[100,300,800],cost:()=>0.08+0.0085,src:'ElevenLabs + Twilio'},
+ exec:{n:'automatizaciones que corren',u:'ejecución',p:'ejecuciones',lv:[1000,2500,10000],src:'n8n'},
+ ai:{n:'respuestas del asistente con IA',u:'respuesta',p:'respuestas',lv:[200,500,1500],cost:()=>tok(3000,500),src:'IA (Claude Haiku 5.5)'},
+ msg:{n:'avisos por WhatsApp',u:'aviso',p:'avisos',lv:[100,300,1000],cost:c=>WA[c[0]]??WA_REST,src:'WhatsApp'},
+};
+const VOL=['Poco','Normal','Mucho'];
+const PLANS={
+ basic:{n:'Básico',d:'que esté en pie',x:1,inc:['Hosting, dominio y candado (https) pagados y renovados','Copias de seguridad','Actualizaciones de seguridad','Arreglar lo que se rompa','Respuesta en 2 días hábiles']},
+ std:{n:'Estándar',d:'en pie y revisado cada semana',x:2,inc:['Todo lo del Básico','Revisión cada semana buscando fallas','Ajustes pequeños: textos, precios, fotos, horarios','Respuesta en 1 día hábil','Resumen del mes: cuánto se usó y qué se arregló']},
+ pri:{n:'Prioritario',d:'para negocios que no pueden parar',x:3,inc:['Todo lo del Estándar','Respuesta el mismo día','Reunión de 30 minutos al mes','Más horas para ajustes pequeños','Aviso antes de pasar lo incluido']},
+};
+const NOTINC='Funciones nuevas (se cotizan aparte) y el uso por encima de lo incluido.';
+const plan=()=>PLANS[S.plan]||PLANS.std;
+const selTypes=()=>TYPES.filter(t=>S.types.includes(t.id));
+const selFeats=()=>FEATURES.filter(f=>S.feats.includes(f.id));
+const mHoursAuto=()=>(selTypes().reduce((a,t)=>a+t.mh,0)+selFeats().filter(f=>f.m).length)*plan().x;
+function infraParts(c){const L=selTypes(),fix=[];
+ if(L.some(t=>t.dom))fix.push(['Dominio .com (al año ÷ 12)',DOMAIN_Y/12]);
+ if(L.some(t=>t.host==='netlify'))fix.push(['Hosting y base de datos (Netlify Personal + Firebase gratis)',NETLIFY]);else if(L.some(t=>t.host==='free'))fix.push(['Hosting (Netlify, plan gratis)',0]);
+ if(L.some(t=>t.use==='min'))fix.push(['Número de teléfono (Twilio)',PHONE]);
+ const keys=[...new Set([...L.filter(t=>t.use).map(t=>t.use),...selFeats().filter(f=>f.use).map(f=>f.use)])];
+ const usage=keys.map(k=>{const u=USE[k],q=u.lv[S.vol??1];
+  if(k==='exec'){const pl=N8N.find(p=>q<=p[0])||N8N[N8N.length-1];return {k,n:u.n,u:u.u,q,inc:pl[1],unit:N8N[1][1]/N8N[1][0],src:pl[2]}}
+  const unit=u.cost(c);return {k,n:u.n,u:u.u,q,inc:q*unit,unit,src:u.src}});
+ return {fix,usage,sum:fix.reduce((a,f)=>a+f[1],0)+usage.reduce((a,u)=>a+u.inc,0)}}
+const cents=v=>'$'+(v<0.1?v.toFixed(v<0.01?4:3):v.toFixed(2));
+function maint(cn){const c=cn||country()||COUNTRIES[0];const I=infraParts(c);
+ const infra=S.ov.infra??I.sum;const hours=V('mhours');
+ const srate=cn?suggestedRate(cn):(S.ov.rate??suggestedRate(c));
+ const work=hours*srate,base=infra+work,total=Math.ceil(base*(1+V('margin')/100)/5)*5;
+ const usage=I.usage.map(u=>({...u,extra:Math.max(0.01,Math.ceil(u.unit*V('markup')*100)/100)}));
+ return {fix:I.fix,usage,infra,hours,srate,work,base,total,plan:plan()}}
+
 let S=fresh();
 const $=id=>document.getElementById(id);
 const money=(v,c)=>{if(v==null||!isFinite(v))return '—';try{return new Intl.NumberFormat('es-419',{style:'currency',currency:c||'USD',maximumFractionDigits:0}).format(v)}catch(e){return (c||'USD')+' '+Math.round(v)}};
@@ -302,25 +350,25 @@ const AICUT=[30,20,10];
 const aiRate=(c,ai)=>Math.round(suggestedRate(c)*(1-ai/100)*2)/2;
 function auto(){const c=country()||COUNTRIES[0];const t=type()||TYPES[0];const p=PAY[S.pay]||{};
  const x=complexity();const ai=S.ov.ai??(x?AICUT[x.lvl]:0);
- return {ai,rate:aiRate(c,ai),hours:t.h+featHours(),margin:30,setup:10.46,services:0,support:2+monthlyFeats()*0.5,pack:PACK[Math.min(S.types.length,4)],fee:p.fee??0,fix:p.fix??0}}
+ return {ai,rate:aiRate(c,ai),hours:t.h+featHours(),margin:30,setup:10.46,mhours:mHoursAuto(),infra:infraParts(country()||COUNTRIES[0]).sum,markup:3,pack:PACK[Math.min(S.types.length,4)],fee:p.fee??0,fix:p.fix??0}}
 const V=k=>S.ov[k]??auto()[k];
 // descuento por paquete: 2 servicios 10%, 3 servicios 15%, 4 o más 20% (editable en «Ajustar los números»)
 const PACK=[0,0,10,15,20];
-function compute(cn){const rate=cn?aiRate(cn,V('ai')):V('rate');const hours=V('hours');const work=hours*rate;const floor=work+V('setup');const solo=floor*(1+V('margin')/100);const pack=S.types.length>1?V('pack'):0;const rec=solo*(1-pack/100);const srate=cn?suggestedRate(cn):(S.ov.rate??suggestedRate(country()||COUNTRIES[0]));const monthly=V('services')+V('support')*srate;return {rate,srate,hours,work,floor,solo,pack,rec,monthly}}
+function compute(cn){const rate=cn?aiRate(cn,V('ai')):V('rate');const hours=V('hours');const work=hours*rate;const floor=work+V('setup');const solo=floor*(1+V('margin')/100);const pack=S.types.length>1?V('pack'):0;const rec=solo*(1-pack/100);const M=maint(cn);const srate=M.srate;const monthly=M.total;return {rate,srate,hours,work,floor,solo,pack,rec,monthly,M}}
 function complexity(){const t=type();if(!t)return null;const extra=featHours();const r=extra/t.h;const n=S.feats.length+t.count-1;const lvl=r<0.25&&n<=1?0:(r<0.75&&n<=3?1:2);return {lvl,name:['Baja','Media','Alta'][lvl],base:t.h,extra,pos:Math.min(97,4+r*70)}}
 const recPrice=()=>Math.ceil(compute().rec/10)*10;
 const price=()=>S.price??recPrice();
-const canNext=()=>[S.country,hasType(),1,S.pay,1][S.step]!=null;
+const canNext=()=>[S.country,hasType(),1,1,S.pay,1][S.step]!=null;
 const loc=v=>{const c=country();return c&&c[3]&&c[4]!=='USD'?'≈ '+money(v*c[3],c[4]):''};
 const lab=t=>`<span class="lab">${t}</span>`;
 
 function go(n){S.step=n;render();const p=$('progress');window.scrollTo({top:Math.max(0,p.getBoundingClientRect().top+scrollY-10),behavior:'smooth'})}
-function progress(){const maxOk=S.country==null?0:!hasType()?1:S.pay==null?3:5;
+function progress(){const maxOk=S.country==null?0:!hasType()?1:S.pay==null?4:6;
  $('progress').innerHTML=STEPS.map((s,i)=>`<button type="button" class="${i===S.step?'now':i<S.step?'done':''}" ${i>maxOk?'disabled':''} data-i="${i}"><i></i><em>0${i+1}</em><span>${s}</span></button>`).join('');
  $('progress').querySelectorAll('button').forEach(b=>b.onclick=()=>go(+b.dataset.i))}
 function nav(nextTxt){return `<div class="nav"><button class="btn ghost" type="button" id="back" ${S.step===0?'style="visibility:hidden"':''}>Atrás</button><button class="btn" type="button" id="next">${nextTxt||'Siguiente'}</button></div>`}
 function bindNav(){if($('back'))$('back').onclick=()=>go(S.step-1);const n=$('next');if(n){n.disabled=!canNext();n.onclick=()=>go(S.step+1)}}
-function wrapQ(i,q,sub,why,body,nextTxt){return `<section class="card"><div class="qnum"><b>0${i}</b>de 05</div><h2>${q}</h2><p class="sub">${sub}</p><div class="why">${lab('¿Por qué importa?')}${why}</div>${body}${nav(nextTxt)}</section>`}
+function wrapQ(i,q,sub,why,body,nextTxt){return `<section class="card"><div class="qnum"><b>0${i}</b>de 06</div><h2>${q}</h2><p class="sub">${sub}</p><div class="why">${lab('¿Por qué importa?')}${why}</div>${body}${nav(nextTxt)}</section>`}
 
 function stepType(){return wrapQ(2,'¿Qué le vas a construir?','Marca lo que te pidió el cliente. Si son varias cosas (por ejemplo, una página web y un chatbot), márcalas todas. Si lleva 2 o más, se le hace un precio de paquete: más barato que pedir cada cosa por separado.','Cada tipo de trabajo lleva distinto tiempo. Las horas que ves son un ejemplo de cuánto toma trabajando con IA; si a ti te toma más o menos, lo cambias al final.',
  `<div class="opts">${TYPES.map(t=>`<button type="button" class="opt" data-t="${t.id}" aria-pressed="${S.types.includes(t.id)}">${t.n}<small>${t.d}</small><span class="h">unas ${t.h} horas</span></button>`).join('')}</div>
@@ -329,7 +377,7 @@ const ALWAYS='Pruebas antes de entregar, publicación y explicación de cómo us
 const delivPanel=()=>S.types.length?`<div class="panel" style="margin-top:18px"><h3>Lo que vas a entregar</h3>${delivHTML()}</div>`:'';
 function delivHTML(){const L=TYPES.filter(t=>S.types.includes(t.id));if(!L.length)return '';const ex=FEATURES.filter(f=>S.feats.includes(f.id));
  return `<div class="deliv">${L.map(t=>`<div><h4>${t.n}</h4><ul>${t.inc.map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('')}${ex.length?`<div><h4>Extras</h4><ul>${ex.map(f=>`<li>${f.n}</li>`).join('')}</ul></div>`:''}</div><p class="sub" style="margin:10px 0 0">Siempre incluye: ${ALWAYS}</p>`}
-function stepFeats(){const t=type();return wrapQ(3,'¿Qué más lleva?',`Marca todo lo que el cliente quiere que tenga su ${t.many?'proyecto':t.n.toLowerCase()}. Si no lleva nada extra, sigue.`,'Mientras más cosas lleve, más horas te toma y más sube el precio. Las que trabajan todos los meses (como la IA o los avisos) también suben la mensualidad, porque te toca cuidarlas.',
+function stepFeats(){const t=type();return wrapQ(3,'¿Qué más lleva?',`Marca todo lo que el cliente quiere que tenga su ${t.many?'proyecto':t.n.toLowerCase()}. Si no lleva nada extra, sigue.`,'Mientras más cosas lleve, más horas te toma y más sube el precio. Las que trabajan todos los meses (como la IA o los avisos) también suben la mensualidad: te toca cuidarlas y cada uso cuesta.',
  `<div class="opts">${FEATURES.map(f=>`<button type="button" class="opt" data-f="${f.id}" aria-pressed="${S.feats.includes(f.id)}">${f.n}<small>${f.d}</small><span class="h">+${f.h} h${f.m?' · sube la mensualidad':''}</span></button>`).join('')}</div>
  <div class="cx" id="cx" aria-live="polite"></div>`)}
 function cxBox(){const x=complexity();if(!x)return '';const msg=['Proyecto sencillo: lo básico, pocas sorpresas.','Proyecto mediano: lleva varias piezas que hay que conectar.','Proyecto complejo: muchas piezas. Cobra bien y deja tiempo para pruebas.'][x.lvl];
@@ -340,43 +388,62 @@ function stepCountry(){const c=country();return wrapQ(1,'¿En qué país está t
  <p style="font-weight:700;margin:20px 0 8px">¿Cuánta experiencia tienes?</p>
  <div class="chips">${Object.entries(LEVELS).map(([k,l])=>`<button type="button" class="chip" data-l="${k}" aria-pressed="${S.level===k}">${l.n}</button>`).join('')}</div>
  <div class="why" style="margin:16px 0 0;${c?'':'display:none'}" id="cnote" aria-live="polite">${c?countryNote(c):''}</div>`)}
-function stepPay(){const c=country();const p=PAY[S.pay];const need=p&&p.fee==null;return wrapQ(4,'¿Cómo te va a pagar?',`Estas son las formas de cobrar que funcionan en ${c[1]}.`,'Cada plataforma se queda con una parte de lo que te pagan. Así sabes cuánto te llega de verdad a ti.'+(c[5].includes('stripe')?'':` Ojo: <b>Stripe no deja cobrar desde ${c[1]}</b>, por eso no aparece.`),
+function stepPay(){const c=country();const p=PAY[S.pay];const need=p&&p.fee==null;return wrapQ(5,'¿Cómo te va a pagar?',`Estas son las formas de cobrar que funcionan en ${c[1]}.`,'Cada plataforma se queda con una parte de lo que te pagan. Así sabes cuánto te llega de verdad a ti.'+(c[5].includes('stripe')?'':` Ojo: <b>Stripe no deja cobrar desde ${c[1]}</b>, por eso no aparece.`),
  `<div class="opts">${c[5].map(k=>`<button type="button" class="opt" data-p="${k}" aria-pressed="${S.pay===k}">${PAY[k].n}<small>${PAY[k].d}</small><span class="h">${PAY[k].fee==null?'comisión: búscala':PAY[k].fee===0?'sin comisión':PAY[k].fee+'% + $'+PAY[k].fix.toFixed(2)}</span></button>`).join('')}</div>
  ${p?`<p class="sub" style="margin:14px 0 0">${p.note}</p>`:''}
  ${need?`<label class="inline">¿Cuánto cobra ${p.n}?<span>% por cada pago. Si aún no lo sabes, déjalo vacío y lo cambias después.</span><input type="number" id="feeIn" min="0" step="0.1" inputmode="decimal" value="${S.ov.fee??''}" placeholder="Ej.: 4"></label>`:''}
  ${S.pay==='stripe'?`<label class="check"><input type="checkbox" id="foreign" ${S.foreign?'checked':''}> El cliente paga con una tarjeta de otro país <span style="color:var(--muted);font-weight:500">(Stripe suma 1.5%)</span></label>`:''}`)}
+
+function mntHTML(){const M=compute().M;const P=M.plan;
+ return `<div class="panel"><h3>Así sale la mensualidad · plan ${P.n}</h3>
+ ${M.fix.map(([n,v])=>`<div class="sumrow"><span>${n}</span><b>${v?cents(v):'$0'}</b></div>`).join('')}
+ ${M.usage.map(u=>`<div class="sumrow"><span>Incluye ${u.q.toLocaleString('es')} ${u.n}<small style="display:block;font-size:12px">${u.src}${u.k==='exec'?'':' · '+cents(u.unit)+' cada '+u.u}</small></span><b>${cents(u.inc)}</b></div>`).join('')}
+ ${S.ov.infra!=null?`<div class="sumrow"><span>Servicios (lo cambiaste tú)</span><b>${money(M.infra)}</b></div>`:''}
+ <div class="sumrow"><span>Tu tiempo: ${+M.hours.toFixed(1)} h × ${rmoney(M.srate)}<small style="display:block;font-size:12px">sin el ajuste por IA: es tu tiempo atendiendo al cliente</small></span><b>${money(M.work)}</b></div>
+ <div class="sumrow"><span>Tu ganancia (${V('margin')}%)</span><b>${money(M.total-M.base)}</b></div>
+ <div class="sumrow total"><span>Mensualidad</span><b>${money(M.total)}<small>${loc(M.total)}</small></b></div>
+ ${M.usage.length?`<div class="why" style="margin:14px 0 0">${lab('Pago por uso')}Si el cliente pasa de lo incluido, cobra cada uso extra: ${M.usage.map(u=>`<b>$${u.extra.toFixed(2)} por ${u.u}</b>`).join(', ')}. Es ${V('markup')} veces lo que te cuesta: si su negocio crece, tu costo no se come tu ganancia.</div>`:''}
+ <div class="deliv" style="margin-top:14px"><div><h4>Qué incluye</h4><ul>${P.inc.map(i=>`<li>${i}</li>`).join('')}</ul></div><div><h4>No incluye</h4><p class="sub" style="margin:0;font-size:14px">${NOTINC}</p></div></div></div>`}
+function stepMaint(){const keys=infraParts(country()||COUNTRIES[0]).usage;
+ return wrapQ(4,'¿Qué mantenimiento le ofreces cada mes?','La app sigue trabajando después de entregarla. La mensualidad paga que siga en pie, los servicios que usa y tu tiempo cuidándola. Empieza a cobrarse cuando la app ya está en uso.','La mensualidad no es por el alojamiento: es por lo que haces cada mes. Y los servicios que pagas tú (hosting, dominio, IA, minutos de llamada) van dentro; si no, salen de tu bolsillo.',
+ `<div class="opts">${Object.entries(PLANS).map(([k,p])=>`<button type="button" class="opt" data-pl="${k}" aria-pressed="${S.plan===k}">${p.n}<small>${p.d}</small><span class="h">${+((selTypes().reduce((a,t)=>a+t.mh,0)+selFeats().filter(f=>f.m).length)*p.x).toFixed(1)} h tuyas al mes</span></button>`).join('')}</div>
+ ${keys.length?`<p style="font-weight:700;margin:22px 0 4px">¿Cuánto lo va a usar al mes?</p><p class="sub" style="margin:0 0 10px">Lo que lleva se paga por uso: ${keys.map(u=>u.n).join(', ')}. Elige cuánto incluye la mensualidad.</p>
+ <div class="chips">${VOL.map((v,i)=>`<button type="button" class="chip" data-vol="${i}" aria-pressed="${(S.vol??1)===i}">${v}: ${keys.map(u=>USE[u.k].lv[i].toLocaleString('es')+' '+USE[u.k].p).join(' · ')}</button>`).join('')}</div>`:''}
+ <div id="mnt" style="margin-top:18px" aria-live="polite"></div>`)}
 const VALS=[100,200,500,1000,2000];
-function stepValue(){return wrapQ(5,'¿Cuánto le ayuda la app al negocio cada mes?','Piensa en dinero: lo que le ahorra (tiempo, empleados, errores) o lo que le hace ganar (más ventas, más citas). Es opcional.','Con este dato sabemos si tu precio es fácil de vender. Si la app le da al cliente $200 al mes, cobrar $1.000 se le paga solo en 5 meses. Si no lo sabes, sigue sin responder.',
+function stepValue(){return wrapQ(6,'¿Cuánto le ayuda la app al negocio cada mes?','Piensa en dinero: lo que le ahorra (tiempo, empleados, errores) o lo que le hace ganar (más ventas, más citas). Es opcional.','Con este dato sabemos si tu precio es fácil de vender. Si la app le da al cliente $200 al mes, cobrar $1.000 se le paga solo en 5 meses. Si no lo sabes, sigue sin responder.',
  `<div class="chips">${[0,...VALS].map(v=>`<button type="button" class="chip" data-v="${v}" aria-pressed="${S.value===v}">${v===0?'No lo sé':money(v)+' al mes'}</button>`).join('')}</div>
  <label class="inline">O escribe otra cantidad<span>USD al mes</span><input type="number" id="valIn" min="0" step="10" inputmode="decimal" value="${S.value&&!VALS.includes(S.value)?S.value:''}" placeholder="Ej.: 300"></label>`,'Ver mi cotización')}
 
-function render(){if(S.step>0&&!S.country)S.step=0;if(S.step>1&&!hasType())S.step=1;if(S.step>3&&!S.pay)S.step=3;
- progress();$('grid').classList.toggle('final',S.step===5);
- $('stage').innerHTML=[stepCountry,stepType,stepFeats,stepPay,stepValue,stepResult][S.step]();
- if(S.step===2)$('cx').innerHTML=cxBox();if(S.step===1)$('deliv').innerHTML=delivPanel();
+function render(){if(S.step>0&&!S.country)S.step=0;if(S.step>1&&!hasType())S.step=1;if(S.step>4&&!S.pay)S.step=4;
+ progress();$('grid').classList.toggle('final',S.step===6);
+ $('stage').innerHTML=[stepCountry,stepType,stepFeats,stepMaint,stepPay,stepValue,stepResult][S.step]();
+ if(S.step===2)$('cx').innerHTML=cxBox();if(S.step===3)$('mnt').innerHTML=mntHTML();if(S.step===1)$('deliv').innerHTML=delivPanel();
  bindStep();bindNav();live();save()}
 function bindStep(){const st=$('stage');const press=(sel,on)=>st.querySelectorAll(sel).forEach(x=>x.setAttribute('aria-pressed',on(x)));
  st.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{const id=b.dataset.t;S.types=S.types.includes(id)?S.types.filter(x=>x!==id):[...S.types,id];S.price=null;delete S.ov.hours;press('[data-t]',x=>S.types.includes(x.dataset.t));$('deliv').innerHTML=delivPanel();progress();bindNav();live();save()});
- st.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const f=b.dataset.f;S.feats=S.feats.includes(f)?S.feats.filter(x=>x!==f):[...S.feats,f];S.price=null;delete S.ov.hours;delete S.ov.support;b.setAttribute('aria-pressed',S.feats.includes(f));$('cx').innerHTML=cxBox();live();save()});
+ st.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const f=b.dataset.f;S.feats=S.feats.includes(f)?S.feats.filter(x=>x!==f):[...S.feats,f];S.price=null;delete S.ov.hours;delete S.ov.mhours;delete S.ov.infra;b.setAttribute('aria-pressed',S.feats.includes(f));$('cx').innerHTML=cxBox();live();save()});
  st.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{S.level=b.dataset.l;S.price=null;delete S.ov.rate;press('[data-l]',x=>x.dataset.l===S.level);if(country())$('cnote').innerHTML=countryNote(country());live();save()});
  st.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{S.country=b.dataset.c;S.price=null;delete S.ov.rate;if(S.pay&&!country()[5].includes(S.pay)){S.pay=null;delete S.ov.fee;delete S.ov.fix}
   press('[data-c]',x=>x.dataset.c===S.country);const n=$('cnote');n.style.display='';n.innerHTML=countryNote(country());progress();bindNav();live();save()});
+ st.querySelectorAll('[data-pl]').forEach(b=>b.onclick=()=>{S.plan=b.dataset.pl;delete S.ov.mhours;press('[data-pl]',x=>x.dataset.pl===S.plan);$('mnt').innerHTML=mntHTML();live();save()});
+ st.querySelectorAll('[data-vol]').forEach(b=>b.onclick=()=>{S.vol=+b.dataset.vol;delete S.ov.infra;press('[data-vol]',x=>+x.dataset.vol===S.vol);$('mnt').innerHTML=mntHTML();live();save()});
  st.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{S.pay=b.dataset.p;delete S.ov.fee;delete S.ov.fix;if(S.pay!=='stripe')S.foreign=false;render()});
  if($('feeIn'))$('feeIn').addEventListener('input',e=>{const v=parseFloat(e.target.value);if(isFinite(v))S.ov.fee=v;else delete S.ov.fee;save()});
  if($('foreign'))$('foreign').onchange=e=>{S.foreign=e.target.checked;save()};
  st.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{S.value=+b.dataset.v;$('valIn').value='';press('[data-v]',x=>+x.dataset.v===S.value);save()});
  if($('valIn'))$('valIn').addEventListener('input',e=>{const v=parseFloat(e.target.value);S.value=isFinite(v)?v:0;press('[data-v]',()=>false);save()});
- if(S.step===5)bindResult()}
+ if(S.step===6)bindResult()}
 
-function live(){const L=$('live'),M=$('mbar');L.hidden=S.step===5;
- if(S.step===5){M.classList.remove('on');return}
+function live(){const L=$('live'),M=$('mbar');L.hidden=S.step===6;
+ if(S.step===6){M.classList.remove('on');return}
  if(!hasType()){M.classList.remove('on');const c=country();L.innerHTML=c?`<div class="k">Tu hora en ${c[1]}</div><div class="big">${rmoney(suggestedRate(c))}</div><p class="tip">Cambia de país y mira cómo cambia. En la siguiente pregunta eliges qué vas a construir y aparece el precio.</p>`:`<div class="k">Tu precio</div><div class="big" style="color:var(--muted)">—</div><p class="tip">Elige el país de tu cliente y aquí vas viendo el precio cambiar con cada respuesta.</p>`;return}
  const r=compute();const x=complexity();const c=country();const rp=recPrice();
  L.innerHTML=`<div class="k">Precio recomendado, hasta ahora</div><div class="big">${money(rp)}</div><div class="loc">${c?(loc(rp)||'en dólares'):'aún sin país: precio de Estados Unidos'}</div>
  ${r.pack?`<div class="loc">por separado serían <s>${money(Math.ceil(r.solo/10)*10)}</s> · paquete −${r.pack}%</div>`:''}
- <ul><li><span>Trabajo</span><b>${type().n}</b></li><li><span>Complejidad</span><b>${x.name}</b></li><li><span>Horas</span><b>${r.hours} h</b></li><li><span>Ajuste por IA</span><b>−${V('ai')}%</b></li><li><span>Tu hora</span><b>${rmoney(r.rate)}</b></li><li><span>Mensualidad</span><b>${money(r.monthly)}</b></li></ul>
- <p class="tip">${S.step===2?'Marca un extra y mira cómo sube.':S.step===1?'Marca otro servicio y mira cómo sube.':'Con cada respuesta el precio se ajusta.'}</p>`;
- M.classList.add('on');$('mprice').textContent=money(rp)}
+ <ul><li><span>Trabajo</span><b>${type().n}</b></li><li><span>Complejidad</span><b>${x.name}</b></li><li><span>Horas</span><b>${r.hours} h</b></li><li><span>Ajuste por IA</span><b>−${V('ai')}%</b></li><li><span>Tu hora</span><b>${rmoney(r.rate)}</b></li><li><span>Mensualidad (${r.M.plan.n})</span><b>${money(r.monthly)}</b></li></ul>
+ <p class="tip">${S.step===3?'Cambia el plan y mira cómo cambia la mensualidad.':S.step===2?'Marca un extra y mira cómo sube.':S.step===1?'Marca otro servicio y mira cómo sube.':'Con cada respuesta el precio se ajusta.'}</p>`;
+ M.classList.add('on');$('mprice').innerHTML=money(rp)+`<small style="font:600 12px var(--mono);margin-left:6px;opacity:.9">+ ${money(r.monthly)}/mes</small>`}
 
 function zones(r,valYear){const top=Math.max(r.rec*2.2,(S.market||0)*1.15,valYear?valYear*1.25:0,r.floor*2.6);
  const z=[[0,r.floor,'--z-lose','Pierdes','Por debajo de tu piso: no cubres tus horas ni tus costos.'],[r.floor,r.rec,'--z-fair','Justo','Cubres tu trabajo, pero casi no te queda ganancia.'],[r.rec,r.rec*1.5,'--z-good','Buen precio','Cubres todo y te queda ganancia.']];
@@ -391,7 +458,7 @@ function drawGauge(p,Z){const cx=200,cy=200,R=165,w=30;const ang=v=>Math.PI*(1-M
  s+=`<text x="${cx}" y="${cy-42}" text-anchor="middle" font-family="Archivo Black, Archivo, sans-serif" font-weight="400" font-size="34" fill="${css('--ink')}" stroke="${css('--card2')}" stroke-width="10" paint-order="stroke" stroke-linejoin="round">${money(p)}</text>`;
  $('gauge').innerHTML=s}
 
-const ADV=[['hours','Horas para construirla','horas'],['ai','Ajuste por IA','% que baja tu hora porque con IA todo es más rápido'],['rate','Tu tarifa por hora','USD · ya con el ajuste por IA'],['margin','Tu ganancia','% encima del piso'],['pack','Descuento por paquete','% cuando lleva 2 o más servicios'],['setup','Costos para arrancar','USD · dominio y otros'],['services','Servicios al mes','USD · hosting, base de datos, IA'],['support','Horas de soporte al mes','arreglos y dudas'],['fee','Comisión del pago','% por cada pago'],['fix','Cargo fijo del pago','USD por cada pago']];
+const ADV=[['hours','Horas para construirla','horas'],['ai','Ajuste por IA','% que baja tu hora porque con IA todo es más rápido'],['rate','Tu tarifa por hora','USD · ya con el ajuste por IA'],['margin','Tu ganancia','% encima del piso'],['pack','Descuento por paquete','% cuando lleva 2 o más servicios'],['setup','Costos para arrancar','USD · dominio y otros'],['mhours','Horas de mantenimiento al mes','horas · ya con el plan'],['infra','Servicios y uso incluido al mes','USD · hosting, dominio, IA, minutos…'],['markup','Pago por uso','veces lo que te cuesta cada uso extra'],['fee','Comisión del pago','% por cada pago'],['fix','Cargo fijo del pago','USD por cada pago']];
 function stepResult(){return `<section class="card"><div class="qnum">Tu cotización</div><div class="answer" id="answer"></div><p class="sub" id="answerSub"></p>
  <div class="rgrid">
   <div class="panel"><h3>¿Es buen precio?</h3><p class="sub" style="margin:0">Mueve la barra y mira dónde cae tu precio.</p>
@@ -405,6 +472,7 @@ function stepResult(){return `<section class="card"><div class="qnum">Tu cotizac
   <div class="panel"><h3>Así se calculó</h3><ol class="recipe" id="recipe"></ol></div>
  </div>
  <div class="panel" style="margin-top:20px"><h3>Lo que vas a entregar</h3><p class="sub" style="margin:0 0 4px">Lo que incluye el trabajo. También va en el resumen que copias.</p>${delivHTML()}</div>
+ <div style="margin-top:20px" id="mntR"></div>
  <div class="panel" style="margin-top:20px"><h3>Lo que le dices al cliente</h3><div id="summary"></div>
   <button class="btn" type="button" id="copy" style="margin-top:14px;width:100%">Copiar resumen para mandárselo</button><div class="copied" id="copied"></div><textarea class="fallback" id="fallback" hidden readonly></textarea></div>
  <details><summary>Ajustar los números (si ya sabes cuánto te toma o cuánto cobras)</summary><div class="dbody"><div class="fields">${ADV.map(([k,n,u])=>`<label>${n}<span>${u}</span><input type="number" data-a="${k}" min="0" step="any" inputmode="decimal"><button class="reset" type="button" data-r="${k}">usar el automático</button></label>`).join('')}</div></div></details>
@@ -422,11 +490,11 @@ function bindResult(){$('pRange').addEventListener('input',e=>{S.price=+e.target
 function fees(p){const pct=V('fee')+(S.foreign&&S.pay==='stripe'?1.5:0),fix=V('fix');return {pct,one:p*pct/100+fix}}
 function updResult(fromNum){const r=compute();const c=country();const t=type();const x=complexity();const p=price();const valYear=(S.value||0)*12;const Z=zones(r,valYear);
  const zone=Z.z.find(([a,b])=>p>=a&&p<b)||Z.z[Z.z.length-1];const F=fees(p);const P=PAY[S.pay];
- $('answer').innerHTML=`Cóbrale <em>${money(p)}</em> por construirla y <em>${money(r.monthly)}</em> al mes.`+(r.pack?`<span style="display:block;font:600 clamp(16px,2vw,19px)/1.4 var(--body);color:var(--muted);margin-top:8px">Por separado serían <s>${money(Math.ceil(r.solo/10)*10)}</s>. Al llevarlo todo junto ahorra <b style="color:var(--z-good)">${money(Math.ceil(r.solo/10)*10-p)}</b>.</span>`:'');
+ $('answer').innerHTML=`Cóbrale <em>${money(p)}</em> por construirla y <em>${money(r.monthly)}</em> al mes.`+`<span style="display:block;font:600 clamp(15px,1.8vw,17px)/1.4 var(--body);color:var(--muted);margin-top:8px">Mensualidad con plan ${r.M.plan.n}${r.M.usage.length?', con uso incluido y pago por uso si pasa de ahí':''}.</span>`+(r.pack?`<span style="display:block;font:600 clamp(16px,2vw,19px)/1.4 var(--body);color:var(--muted);margin-top:8px">Por separado serían <s>${money(Math.ceil(r.solo/10)*10)}</s>. Al llevarlo todo junto ahorra <b style="color:var(--z-good)">${money(Math.ceil(r.solo/10)*10-p)}</b>.</span>`:'');
  $('answerSub').textContent=`${t.n} · complejidad ${x.name.toLowerCase()} · cliente en ${c[1]}${loc(p)?' · '+loc(p)+' y '+loc(r.monthly)+' al mes':''}`;
  const pr=$('pRange');pr.max=Math.ceil(Z.top/10)*10;pr.value=p;if(!fromNum)$('pNum').value=p;
  const m=S.market;$('mktTxt').innerHTML=!m?'':m<r.floor?`Otros cobran ${money(m)}, menos que tu piso (${money(r.floor)}). No bajes de tu piso: cobra por lo que incluyes (seguridad, soporte, mensualidad) o reduce lo que lleva el proyecto.`:m<r.rec?`Otros cobran ${money(m)}. Puedes acercarte a ese precio sin bajar de tu piso (${money(r.floor)}), o explicar qué incluyes que otros no.`:`Otros cobran ${money(m)}, más que tu recomendado. Tienes espacio para subir tu precio.`;
- drawGauge(p,Z);$('pill').textContent=zone[3];$('pill').style.background=css(zone[2]);$('vtext').textContent=zone[4];
+ drawGauge(p,Z);$('mntR').innerHTML=mntHTML();$('pill').textContent=zone[3];$('pill').style.background=css(zone[2]);$('vtext').textContent=zone[4];
  const cnt=S.feats.length;const mine=k=>S.ov[k]!=null?' (lo cambiaste tú)':'';
  $('recipe').innerHTML=`
  <li><div class="t">Las horas: ${x.base} de base${t.many?` (${t.count} servicios)`:''}${cnt?` + ${x.extra} por ${cnt} extra${cnt>1?'s':''}`:''}${mine('hours')}<div class="m">${r.hours} horas</div></div></li>
@@ -435,10 +503,10 @@ function updResult(fromNum){const r=compute();const c=country();const t=type();c
  <li><div class="t">Horas × tu hora + lo que pagas para arrancar = <b>tu piso</b><small>lo mínimo para no perder</small><div class="m">${r.hours} × ${rmoney(r.rate)} + ${money(V('setup'))} = <b>${money(r.floor)}</b></div></div></li>
  <li><div class="t">Tu piso + ${V('margin')}% de ganancia = <b>${r.pack?'precio por separado':'precio recomendado'}</b><div class="m">${money(r.floor)} + ${V('margin')}% = <b>${money(r.solo)}</b></div></div></li>${r.pack?`
  <li><div class="t">Lleva ${S.types.length} servicios: −${r.pack}% de paquete = <b>precio recomendado</b><small>sale de tu ganancia, no de tu piso: sigues sin perder</small><div class="m">${money(r.solo)} − ${r.pack}% = <b>${money(r.rec)}</b></div></div></li>`:''}
- <li><div class="t">Servicios + horas de soporte = <b>mensualidad</b><small>${monthlyFeats()?'2 horas al mes, más media hora por cada extra que trabaja todos los meses':'2 horas al mes para arreglos y dudas'}${mine('support')}. El soporte va sin el ajuste por IA: es tu tiempo atendiendo al cliente.</small><div class="m">${money(V('services'))} + ${V('support')} × ${rmoney(r.srate)} = <b>${money(r.monthly)}</b></div></div></li>`;
+ <li><div class="t">Servicios + tu tiempo + ganancia = <b>mensualidad</b><small>plan ${r.M.plan.n}: ${+r.M.hours.toFixed(1)} horas al mes${mine('mhours')}. Tu hora va sin el ajuste por IA: es tu tiempo atendiendo al cliente. Se redondea hacia arriba de 5 en 5.</small><div class="m">${money(r.M.infra)} + ${+r.M.hours.toFixed(1)} × ${rmoney(r.srate)} + ${V('margin')}% = <b>${money(r.monthly)}</b></div></div></li>`;
  $('summary').innerHTML=`
  ${r.pack?`<div class="sumrow"><span>Por separado</span><b><s>${money(Math.ceil(r.solo/10)*10)}</s></b></div><div class="sumrow"><span>Descuento por paquete (${r.pack}%)</span><b style="color:var(--z-good)">− ${money(Math.ceil(r.solo/10)*10-p)}</b></div>`:''}<div class="sumrow"><span>Construcción${r.pack?' (precio de paquete)':''}</span><b>${money(p)}<small>${loc(p)}</small></b></div>
- <div class="sumrow"><span>Mensualidad</span><b>${money(r.monthly)}<small>${loc(r.monthly)}</small></b></div>
+ <div class="sumrow"><span>Mensualidad (plan ${r.M.plan.n})</span><b>${money(r.monthly)}<small>${loc(r.monthly)}</small></b></div>
  <div class="sumrow"><span>Forma de pago</span><b>${P.n}</b></div>
  <div class="sumrow"><span>Comisión de ${P.n}${F.pct?` (${F.pct}%${V('fix')?' + '+money(V('fix')):''})`:''}</span><b>− ${money(F.one)}${P.fee==null&&S.ov.fee==null?'<small>pon su comisión en «Ajustar los números»</small>':''}</b></div>
  <div class="sumrow"><span>A ti te llega por la construcción</span><b>${money(p-F.one)}<small>${loc(p-F.one)}</small></b></div>
@@ -449,13 +517,13 @@ function updResult(fromNum){const r=compute();const c=country();const t=type();c
  save()}
 function copy(){const r=compute();const t=type();const p=price();const inc=FEATURES.filter(f=>S.feats.includes(f.id)).map(f=>f.n).join(', ');
  const del=TYPES.filter(x=>S.types.includes(x.id)).map(x=>`\n${x.n}:\n`+x.inc.map(i=>'  • '+i).join('\n')).join('');
- const txt=`Cotización · ${t.n}\n\nLo que se entrega:${del}${inc?'\nExtras: '+inc:''}\nSiempre incluye: ${ALWAYS}\n${r.pack?'\nPor separado: '+money(Math.ceil(r.solo/10)*10)+' · Precio de paquete (−'+r.pack+'%):':'\nPrecio de construcción:'} ${money(p)}${loc(p)?' ('+loc(p)+')':''}\nMensualidad (soporte y servicios): ${money(r.monthly)}${loc(r.monthly)?' ('+loc(r.monthly)+')':''}\nTotal del primer año: ${money(p+r.monthly*12)}\nForma de pago: ${PAY[S.pay].n}`;
+ const txt=`Cotización · ${t.n}\n\nLo que se entrega:${del}${inc?'\nExtras: '+inc:''}\nSiempre incluye: ${ALWAYS}\n${r.pack?'\nPor separado: '+money(Math.ceil(r.solo/10)*10)+' · Precio de paquete (−'+r.pack+'%):':'\nPrecio de construcción:'} ${money(p)}${loc(p)?' ('+loc(p)+')':''}\nMensualidad, plan ${r.M.plan.n}: ${money(r.monthly)}${loc(r.monthly)?' ('+loc(r.monthly)+')':''}\nLa mensualidad incluye:\n${r.M.plan.inc.map(i=>'  • '+i).join('\n')}${r.M.usage.length?'\nUso incluido al mes: '+r.M.usage.map(u=>u.q.toLocaleString('es')+' '+u.n).join(', ')+'\nSi pasa de ahí: '+r.M.usage.map(u=>'$'+u.extra.toFixed(2)+' por '+u.u+' extra').join(', '):''}\nNo incluye: ${NOTINC}\nLa mensualidad empieza cuando la app ya está en uso.\nTotal del primer año: ${money(p+r.monthly*12)}\nForma de pago: ${PAY[S.pay].n}`;
  const fb=()=>{$('fallback').hidden=false;$('fallback').value=txt;$('fallback').select();$('copied').textContent='Selecciona el texto y cópialo.'};
  try{navigator.clipboard.writeText(txt).then(()=>{$('copied').textContent='Copiado. Pégalo en tu mensaje o cotización.'},fb)}catch(e){fb()}}
 
-$('demo').onclick=()=>{S=Object.assign(fresh(),{step:5,types:['app'],feats:['notify','admin'],country:'COL',pay:'transfer',value:200});render();go(5)};
+$('demo').onclick=()=>{S=Object.assign(fresh(),{step:6,types:['app'],feats:['notify','admin'],plan:'std',vol:1,country:'COL',pay:'transfer',value:200});render();go(6)};
 $('restart').onclick=()=>{S=fresh();go(0)};
-const redraw=()=>{if(S.step===5)updResult();else if(S.step===2)$('cx').innerHTML=cxBox()};
+const redraw=()=>{if(S.step===6)updResult();else if(S.step===2)$('cx').innerHTML=cxBox()};
 matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',redraw);new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 load();render();
 </script>
