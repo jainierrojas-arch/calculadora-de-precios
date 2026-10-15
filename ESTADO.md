@@ -12,3 +12,6 @@
 - 15-oct-2026 (v10): mensualidad nueva. Paso 4 «Mensualidad»: planes Básico/Estándar/Prioritario (horas ×1/×2/×3), qué incluye y qué no, servicios reales (dominio, Netlify Personal $9, Twilio, n8n, Claude Haiku 5.5, WhatsApp por país) y pago por uso (uso incluido Poco/Normal/Mucho + cada uso extra a 3× el costo). Ahora son 6 preguntas. Ejemplo barbería Colombia: mensualidad USD 21 → USD 105.
 
 - 15-oct-2026 (v11): cada servicio tiene versión Básica (lo más importante, ~la mitad de horas) y Premium (más cosas; lo que ya trae no se cobra como extra). Ejemplo barbería Colombia ahora: app Básica + plan Básico = USD 300 + USD 35/mes (antes USD 980 + 105).
+
+- 15-oct-2026 (v12): paso «Valor» en tiempo y en dinero: horas a la semana que le ahorra + sueldo de quien hace ese trabajo (en su moneda) → horas al mes, días de trabajo y su valor; + dinero extra. Resultado «Lo que gana el cliente»: lo que le deja al mes/año, meses para recuperar la construcción DESPUÉS de pagar la mensualidad, y cuánto recibe por cada $1 de mensualidad (avisa si la mensualidad cuesta más de lo que deja). Va también en el resumen que se copia.
+- PENDIENTE (él dirá cuándo): constructor de presupuestos = cotización + contrato listo para firmar (cláusulas y condiciones) + casilla con nombre y datos del cliente que se llenan solos. Leer antes sus documentos.

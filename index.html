@@ -308,7 +308,7 @@ const FEATURES=[
  {id:'lang',n:'Varios idiomas',d:'español, inglés…',h:10},
 ];
 const STEPS=['País','Qué haces','Qué lleva','Mensualidad','Pago','Valor','Resultado'];
-const DEF={step:0,level:'start',types:[],tier:{},feats:[],plan:'std',vol:1,country:null,pay:null,foreign:false,value:null,price:null,market:null,ov:{}};
+const DEF={saveH:null,salary:null,hpw:null,step:0,level:'start',types:[],tier:{},feats:[],plan:'std',vol:1,country:null,pay:null,foreign:false,value:null,price:null,market:null,ov:{}};
 const fresh=()=>JSON.parse(JSON.stringify(DEF));
 // ===== Mensualidad: servicios que pagas tú + uso incluido + tus horas cuidándola + ganancia =====
 // Precios oficiales, oct 2026 (ver «De dónde salen los números»)
@@ -445,14 +445,36 @@ function stepMaint(){const keys=infraParts(country()||COUNTRIES[0]).usage;
  <div class="chips">${VOL.map((v,i)=>`<button type="button" class="chip" data-vol="${i}" aria-pressed="${(S.vol??1)===i}">${v}: ${keys.map(u=>USE[u.k].lv[i].toLocaleString('es')+' '+USE[u.k].p).join(' · ')}</button>`).join('')}</div>`:''}
  <div id="mnt" style="margin-top:18px" aria-live="polite"></div>`)}
 const VALS=[100,200,500,1000,2000];
-function stepValue(){return wrapQ(6,'¿Cuánto le ayuda la app al negocio cada mes?','Piensa en dinero: lo que le ahorra (tiempo, empleados, errores) o lo que le hace ganar (más ventas, más citas). Es opcional.','Con este dato sabemos si tu precio es fácil de vender. Si la app le da al cliente $200 al mes, cobrar $1.000 se le paga solo en 5 meses. Si no lo sabes, sigue sin responder.',
- `<div class="chips">${[0,...VALS].map(v=>`<button type="button" class="chip" data-v="${v}" aria-pressed="${S.value===v}">${v===0?'No lo sé':money(v)+' al mes'}</button>`).join('')}</div>
- <label class="inline">O escribe otra cantidad<span>USD al mes</span><input type="number" id="valIn" min="0" step="10" inputmode="decimal" value="${S.value&&!VALS.includes(S.value)?S.value:''}" placeholder="Ej.: 300"></label>`,'Ver mi cotización')}
-
+// Lo que gana el cliente: tiempo que le devuelve (pasado a dinero con el sueldo de quien lo hace) + dinero extra
+const WEEKS=52/12;const SAVEH=[2,5,10,20];
+const cur=()=>{const c=country();return c&&c[3]&&c[4]!=='USD'?c[4]:'USD'};
+function valueParts(){const c=country()||COUNTRIES[0];const fx=c[3]&&c[4]!=='USD'?c[3]:1;
+ const hM=(S.saveH||0)*WEEKS;const hr=S.salary&&S.hpw?S.salary/fx/(S.hpw*WEEKS):0;const timeV=hM*hr;const extra=S.value||0;
+ return {hM,days:hM/8,hr,timeV,extra,total:timeV+extra}}
+// meses para recuperar la construcción con lo que le queda después de pagar la mensualidad
+const payback=(p,mo,v)=>{const net=v.total-mo;return net>0?Math.max(1,Math.ceil(p/net)):null};
+const hfmt=v=>(+v.toFixed(v<10?1:0)).toLocaleString('es');
+function valHTML(full){const v=valueParts();if(!v.hM&&!v.extra)return '';const r=full?compute():null;const p=full?price():0;
+ return `<div class="panel"><h3>Lo que gana el cliente</h3><p class="sub" style="margin:0 0 6px">Esto es lo que de verdad está pagando: tiempo y dinero que la app le devuelve cada mes.</p>
+ ${v.hM?`<div class="sumrow"><span>Tiempo que le devuelve<small style="display:block;font-size:12px">${hfmt(S.saveH)} h a la semana × ${hfmt(WEEKS)} semanas</small></span><b>${hfmt(v.hM)} h al mes<small>≈ ${hfmt(v.days)} días de trabajo de 8 h</small></b></div>`:''}
+ ${v.hM?(v.hr?`<div class="sumrow"><span>Esas horas en dinero<small style="display:block;font-size:12px">a ${rmoney(+v.hr.toFixed(2))} la hora de quien hace ese trabajo</small></span><b>${money(v.timeV)}<small>${loc(v.timeV)}</small></b></div>`:`<p class="sub" style="margin:8px 0 0;font-size:14px">Pon el sueldo de quien hace ese trabajo para pasar las horas a dinero.</p>`):''}
+ ${v.extra?`<div class="sumrow"><span>Dinero extra<small style="display:block;font-size:12px">más ventas, citas que no se pierden, menos errores</small></span><b>${money(v.extra)}<small>${loc(v.extra)}</small></b></div>`:''}
+ ${v.total?`<div class="sumrow total"><span>Lo que le deja al mes</span><b>${money(v.total)}<small>${loc(v.total)} · ${money(v.total*12)} al año</small></b></div>`:''}
+ ${full&&v.total?(pb=>`<div class="why" style="margin:14px 0 0">${lab('Cómo se lo explicas')}${pb?`Después de pagar la mensualidad (${money(r.monthly)}) le quedan <b>${money(v.total-r.monthly)} al mes</b>: la construcción se le paga sola en <b>${pb} ${pb>1?'meses':'mes'}</b>. Por cada ${money(1)} de mensualidad recibe <b>${rmoney(+(v.total/r.monthly).toFixed(2))}</b>.`:`Ojo: la mensualidad (${money(r.monthly)}) cuesta más de lo que la app le deja (${money(v.total)}). Así es difícil de vender: baja el plan de mantenimiento o busca más valor.`}${v.hM?` Además recupera ${hfmt(v.days)} días de trabajo al mes para atender clientes.`:''}</div>`)(payback(p,r.monthly,v)):''}</div>`}
+function stepValue(){const cu=cur();return wrapQ(6,'¿Cuánto le ayuda al negocio cada mes?','En tiempo y en dinero. Así el cliente ve qué está pagando de verdad. Todo es opcional.','Con esto sabes si tu precio es fácil de vender. Si la app le deja $200 al mes, cobrar $1.000 se le paga solo en 5 meses.',
+ `<p style="font-weight:700;margin:0 0 4px">1. Tiempo: ¿cuántas horas a la semana le ahorra?</p><p class="sub" style="margin:0 0 10px">Lo que hoy se hace a mano y la app hará sola: contestar mensajes, anotar citas, pasar datos, hacer cuentas.</p>
+ <div class="chips">${[0,...SAVEH].map(h=>`<button type="button" class="chip" data-sh="${h}" aria-pressed="${(S.saveH||0)===h&&(h>0||S.saveH===0)}">${h===0?'No lo sé':h+' h a la semana'}</button>`).join('')}</div>
+ <label class="inline">O escribe otra cantidad<span>horas a la semana</span><input type="number" id="shIn" min="0" step="0.5" inputmode="decimal" value="${S.saveH&&!SAVEH.includes(S.saveH)?S.saveH:''}" placeholder="Ej.: 3"></label>
+ <p style="font-weight:700;margin:24px 0 4px">2. ¿Cuánto gana quien hace ese trabajo?</p><p class="sub" style="margin:0 0 4px">Para pasar las horas a dinero. Puede ser el dueño o un empleado.</p>
+ <div class="fields" style="max-width:520px"><label>Sueldo al mes<span>en ${cu}</span><input type="number" id="salIn" min="0" step="any" inputmode="decimal" value="${S.salary||''}" placeholder="Ej.: ${cu==='USD'?'500':'2000000'}"></label><label>Horas que trabaja a la semana<span>horas</span><input type="number" id="hpwIn" min="1" step="1" inputmode="decimal" value="${S.hpw||''}" placeholder="Ej.: 48"></label></div>
+ <p style="font-weight:700;margin:24px 0 4px">3. Dinero: ¿cuánto más le hace ganar al mes?</p><p class="sub" style="margin:0 0 10px">Más ventas, citas que ya no se pierden, menos errores.</p>
+ <div class="chips">${[0,...VALS].map(v=>`<button type="button" class="chip" data-v="${v}" aria-pressed="${S.value===v}">${v===0?'No lo sé':money(v)+' al mes'}</button>`).join('')}</div>
+ <label class="inline">O escribe otra cantidad<span>USD al mes</span><input type="number" id="valIn" min="0" step="10" inputmode="decimal" value="${S.value&&!VALS.includes(S.value)?S.value:''}" placeholder="Ej.: 300"></label>
+ <div id="valBox" style="margin-top:20px" aria-live="polite"></div>`,'Ver mi cotización')}
 function render(){if(S.step>0&&!S.country)S.step=0;if(S.step>1&&!hasType())S.step=1;if(S.step>4&&!S.pay)S.step=4;
  progress();$('grid').classList.toggle('final',S.step===6);
  $('stage').innerHTML=[stepCountry,stepType,stepFeats,stepMaint,stepPay,stepValue,stepResult][S.step]();
- if(S.step===2)$('cx').innerHTML=cxBox();if(S.step===3)$('mnt').innerHTML=mntHTML();if(S.step===1)$('deliv').innerHTML=delivPanel();
+ if(S.step===2)$('cx').innerHTML=cxBox();if(S.step===3)$('mnt').innerHTML=mntHTML();if(S.step===5)$('valBox').innerHTML=valHTML();if(S.step===1)$('deliv').innerHTML=delivPanel();
  bindStep();bindNav();live();save()}
 function bindStep(){const st=$('stage');
  st.onclick=e=>{const b=e.target.closest('[data-tier]');if(!b)return;const [id,k]=b.dataset.tier.split(':');S.tier={...S.tier,[id]:k};S.price=null;delete S.ov.hours;delete S.ov.mhours;delete S.ov.infra;$('deliv').innerHTML=delivPanel();live();save()};const press=(sel,on)=>st.querySelectorAll(sel).forEach(x=>x.setAttribute('aria-pressed',on(x)));
@@ -466,8 +488,13 @@ function bindStep(){const st=$('stage');
  st.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{S.pay=b.dataset.p;delete S.ov.fee;delete S.ov.fix;if(S.pay!=='stripe')S.foreign=false;render()});
  if($('feeIn'))$('feeIn').addEventListener('input',e=>{const v=parseFloat(e.target.value);if(isFinite(v))S.ov.fee=v;else delete S.ov.fee;save()});
  if($('foreign'))$('foreign').onchange=e=>{S.foreign=e.target.checked;save()};
- st.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{S.value=+b.dataset.v;$('valIn').value='';press('[data-v]',x=>+x.dataset.v===S.value);save()});
- if($('valIn'))$('valIn').addEventListener('input',e=>{const v=parseFloat(e.target.value);S.value=isFinite(v)?v:0;press('[data-v]',()=>false);save()});
+ const vb=()=>{$('valBox').innerHTML=valHTML();save()};const num=e=>{const v=parseFloat(e.target.value);return isFinite(v)&&v>0?v:0};
+ st.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{S.value=+b.dataset.v;$('valIn').value='';press('[data-v]',x=>+x.dataset.v===S.value);vb()});
+ if($('valIn'))$('valIn').addEventListener('input',e=>{S.value=num(e);press('[data-v]',()=>false);vb()});
+ st.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>{S.saveH=+b.dataset.sh;$('shIn').value='';press('[data-sh]',x=>+x.dataset.sh===S.saveH);vb()});
+ if($('shIn'))$('shIn').addEventListener('input',e=>{S.saveH=num(e);press('[data-sh]',()=>false);vb()});
+ if($('salIn'))$('salIn').addEventListener('input',e=>{S.salary=num(e);vb()});
+ if($('hpwIn'))$('hpwIn').addEventListener('input',e=>{S.hpw=num(e);vb()});
  if(S.step===6)bindResult()}
 
 function live(){const L=$('live'),M=$('mbar');L.hidden=S.step===6;
@@ -507,6 +534,7 @@ function stepResult(){return `<section class="card"><div class="qnum">Tu cotizac
   <div class="panel"><h3>Así se calculó</h3><ol class="recipe" id="recipe"></ol></div>
  </div>
  <div class="panel" style="margin-top:20px"><h3>Lo que vas a entregar</h3><p class="sub" style="margin:0 0 4px">Lo que incluye el trabajo. También va en el resumen que copias.</p>${delivHTML()}</div>
+ <div style="margin-top:20px" id="valR"></div>
  <div style="margin-top:20px" id="mntR"></div>
  <div class="panel" style="margin-top:20px"><h3>Lo que le dices al cliente</h3><div id="summary"></div>
   <button class="btn" type="button" id="copy" style="margin-top:14px;width:100%">Copiar resumen para mandárselo</button><div class="copied" id="copied"></div><textarea class="fallback" id="fallback" hidden readonly></textarea></div>
@@ -523,13 +551,13 @@ function bindResult(){$('pRange').addEventListener('input',e=>{S.price=+e.target
  $('again').onclick=()=>{S=fresh();render()};
  $('copy').onclick=copy;fill();updResult()}
 function fees(p){const pct=V('fee')+(S.foreign&&S.pay==='stripe'?1.5:0),fix=V('fix');return {pct,one:p*pct/100+fix}}
-function updResult(fromNum){const r=compute();const c=country();const t=type();const x=complexity();const p=price();const valYear=(S.value||0)*12;const Z=zones(r,valYear);
+function updResult(fromNum){const r=compute();const c=country();const t=type();const x=complexity();const p=price();const VP=valueParts();const valYear=VP.total*12;const Z=zones(r,valYear);
  const zone=Z.z.find(([a,b])=>p>=a&&p<b)||Z.z[Z.z.length-1];const F=fees(p);const P=PAY[S.pay];
  $('answer').innerHTML=`Cóbrale <em>${money(p)}</em> por construirla y <em>${money(r.monthly)}</em> al mes.`+`<span style="display:block;font:600 clamp(15px,1.8vw,17px)/1.4 var(--body);color:var(--muted);margin-top:8px">Mensualidad con plan ${r.M.plan.n}${r.M.usage.length?', con uso incluido y pago por uso si pasa de ahí':''}.</span>`+(r.pack?`<span style="display:block;font:600 clamp(16px,2vw,19px)/1.4 var(--body);color:var(--muted);margin-top:8px">Por separado serían <s>${money(Math.ceil(r.solo/10)*10)}</s>. Al llevarlo todo junto ahorra <b style="color:var(--z-good)">${money(Math.ceil(r.solo/10)*10-p)}</b>.</span>`:'');
  $('answerSub').textContent=`${t.n} · complejidad ${x.name.toLowerCase()} · cliente en ${c[1]}${loc(p)?' · '+loc(p)+' y '+loc(r.monthly)+' al mes':''}`;
  const pr=$('pRange');pr.max=Math.ceil(Z.top/10)*10;pr.value=p;if(!fromNum)$('pNum').value=p;
  const m=S.market;$('mktTxt').innerHTML=!m?'':m<r.floor?`Otros cobran ${money(m)}, menos que tu piso (${money(r.floor)}). No bajes de tu piso: cobra por lo que incluyes (seguridad, soporte, mensualidad) o reduce lo que lleva el proyecto.`:m<r.rec?`Otros cobran ${money(m)}. Puedes acercarte a ese precio sin bajar de tu piso (${money(r.floor)}), o explicar qué incluyes que otros no.`:`Otros cobran ${money(m)}, más que tu recomendado. Tienes espacio para subir tu precio.`;
- drawGauge(p,Z);$('mntR').innerHTML=mntHTML();$('pill').textContent=zone[3];$('pill').style.background=css(zone[2]);$('vtext').textContent=zone[4];
+ drawGauge(p,Z);$('mntR').innerHTML=mntHTML();$('valR').innerHTML=valHTML(true);$('pill').textContent=zone[3];$('pill').style.background=css(zone[2]);$('vtext').textContent=zone[4];
  const cnt=extraFeats().length;const mine=k=>S.ov[k]!=null?' (lo cambiaste tú)':'';
  $('recipe').innerHTML=`
  <li><div class="t">Las horas: ${x.base} de base${t.many?` (${t.count} servicios)`:''}${cnt?` + ${x.extra} por ${cnt} extra${cnt>1?'s':''}`:''}${mine('hours')}<div class="m">${r.hours} horas</div></div></li>
@@ -546,17 +574,17 @@ function updResult(fromNum){const r=compute();const c=country();const t=type();c
  <div class="sumrow"><span>Comisión de ${P.n}${F.pct?` (${F.pct}%${V('fix')?' + '+money(V('fix')):''})`:''}</span><b>− ${money(F.one)}${P.fee==null&&S.ov.fee==null?'<small>pon su comisión en «Ajustar los números»</small>':''}</b></div>
  <div class="sumrow"><span>A ti te llega por la construcción</span><b>${money(p-F.one)}<small>${loc(p-F.one)}</small></b></div>
  <div class="sumrow total"><span>Total del primer año</span><b>${money(p+r.monthly*12)}<small>${loc(p+r.monthly*12)}</small></b></div>
- ${S.value?`<p class="sub" style="margin:8px 0 0">La app le da al cliente unos ${money(S.value)} al mes: la construcción se le paga sola en <b>${Math.max(1,Math.ceil(p/S.value))} meses</b>.</p>`:''}`;
+ ${VP.total?(pb=>`<p class="sub" style="margin:8px 0 0">La app le deja al cliente unos ${money(VP.total)} al mes${pb?`: después de la mensualidad, la construcción se le paga sola en <b>${pb} meses</b>`:', menos que la mensualidad'}.</p>`)(payback(p,r.monthly,VP)):''}`;
  const rows=COUNTRIES.map(cn=>({cn,r:compute(cn)}));const max=Math.max(...rows.map(o=>o.r.rec));
  $('table').innerHTML=`<thead><tr><th>País</th><th>Tu hora</th><th>Precio recomendado</th><th>En su moneda</th><th>Mensualidad</th><th>Cómo cobrar</th></tr></thead><tbody>`+rows.map(({cn,r})=>`<tr class="${cn[0]===S.country?'me':''}"><td>${cn[1]}</td><td>${rmoney(r.rate)}</td><td><span class="bar" style="width:${Math.round(60*r.rec/max)}px"></span>${money(r.rec)}</td><td>${cn[3]&&cn[4]!=='USD'?money(r.rec*cn[3],cn[4]):'—'}</td><td>${money(r.monthly)}</td><td style="text-align:left">${cn[5].map(k=>PAY[k].n.split(' (')[0]).join(' · ')}</td></tr>`).join('')+'</tbody>';
  save()}
 function copy(){const r=compute();const t=type();const p=price();const inc=extraFeats().map(f=>f.n).join(', ');
  const del=selTypes().map(x=>`\n${x.n} (${TIER[x.tl]}):\n`+x.inc.map(i=>'  • '+i).join('\n')).join('');
- const txt=`Cotización · ${t.n}\n\nLo que se entrega:${del}${inc?'\nExtras: '+inc:''}\nSiempre incluye: ${ALWAYS}\n${r.pack?'\nPor separado: '+money(Math.ceil(r.solo/10)*10)+' · Precio de paquete (−'+r.pack+'%):':'\nPrecio de construcción:'} ${money(p)}${loc(p)?' ('+loc(p)+')':''}\nMensualidad, plan ${r.M.plan.n}: ${money(r.monthly)}${loc(r.monthly)?' ('+loc(r.monthly)+')':''}\nLa mensualidad incluye:\n${r.M.plan.inc.map(i=>'  • '+i).join('\n')}${r.M.usage.length?'\nUso incluido al mes: '+r.M.usage.map(u=>u.q.toLocaleString('es')+' '+u.n).join(', ')+'\nSi pasa de ahí: '+r.M.usage.map(u=>'$'+u.extra.toFixed(2)+' por '+u.u+' extra').join(', '):''}\nNo incluye: ${NOTINC}\nLa mensualidad empieza cuando la app ya está en uso.\nTotal del primer año: ${money(p+r.monthly*12)}\nForma de pago: ${PAY[S.pay].n}`;
+ const txt=`Cotización · ${t.n}\n\nLo que se entrega:${del}${inc?'\nExtras: '+inc:''}\nSiempre incluye: ${ALWAYS}\n${r.pack?'\nPor separado: '+money(Math.ceil(r.solo/10)*10)+' · Precio de paquete (−'+r.pack+'%):':'\nPrecio de construcción:'} ${money(p)}${loc(p)?' ('+loc(p)+')':''}\nMensualidad, plan ${r.M.plan.n}: ${money(r.monthly)}${loc(r.monthly)?' ('+loc(r.monthly)+')':''}\nLa mensualidad incluye:\n${r.M.plan.inc.map(i=>'  • '+i).join('\n')}${r.M.usage.length?'\nUso incluido al mes: '+r.M.usage.map(u=>u.q.toLocaleString('es')+' '+u.n).join(', ')+'\nSi pasa de ahí: '+r.M.usage.map(u=>'$'+u.extra.toFixed(2)+' por '+u.u+' extra').join(', '):''}\nNo incluye: ${NOTINC}\nLa mensualidad empieza cuando la app ya está en uso.\nTotal del primer año: ${money(p+r.monthly*12)}\nForma de pago: ${PAY[S.pay].n}${(v=>v.hM||v.extra?'\n\nLo que gana tu negocio cada mes:'+(v.hM?'\n  • Le devuelve '+hfmt(v.hM)+' horas al mes (≈ '+hfmt(v.days)+' días de trabajo)':'')+(v.timeV?'\n  • Esas horas valen ≈ '+money(v.timeV)+(loc(v.timeV)?' ('+loc(v.timeV)+')':''):'')+(v.extra?'\n  • Dinero extra ≈ '+money(v.extra):'')+(payback(p,r.monthly,v)?'\n  • Después de la mensualidad, la construcción se paga sola en '+payback(p,r.monthly,v)+' meses':''):'')(valueParts())}`;
  const fb=()=>{$('fallback').hidden=false;$('fallback').value=txt;$('fallback').select();$('copied').textContent='Selecciona el texto y cópialo.'};
  try{navigator.clipboard.writeText(txt).then(()=>{$('copied').textContent='Copiado. Pégalo en tu mensaje o cotización.'},fb)}catch(e){fb()}}
 
-$('demo').onclick=()=>{S=Object.assign(fresh(),{step:6,types:['app'],tier:{app:'b'},feats:[],plan:'basic',vol:1,country:'COL',pay:'transfer',value:200});render();go(6)};
+$('demo').onclick=()=>{S=Object.assign(fresh(),{step:6,types:['app'],tier:{app:'b'},feats:[],plan:'basic',vol:1,country:'COL',pay:'transfer',value:50,saveH:5});render();go(6)};
 $('restart').onclick=()=>{S=fresh();go(0)};
 const redraw=()=>{if(S.step===6)updResult();else if(S.step===2)$('cx').innerHTML=cxBox()};
 matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',redraw);new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
