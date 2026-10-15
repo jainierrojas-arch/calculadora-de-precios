@@ -6,3 +6,5 @@
 - Publicar cambios: `netlify deploy --prod --dir . --site a009d9be-0c5e-4c8c-8fee-4daefcb97bc1` (no está conectado a GitHub para auto-deploy).
 - Sin IA por dentro: no gasta tokens. Solo visitas de Netlify (plan gratis).
 - Siguiente idea: constructor de presupuestos con términos y condiciones (leer antes los documentos de Jainier).
+
+- 15-oct-2026: nuevo aspecto (v9) con la marca de aprendeiadecero.com: fondo oscuro con puntos y brillo rojo, letra Archivo Black, título en rojo + contorno, tarjetas con casilla ✓, precio en vivo como ticket. Si el sistema está en modo claro, sale clara. Publicado en el subdominio y en GitHub.
