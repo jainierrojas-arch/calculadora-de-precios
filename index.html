@@ -169,6 +169,36 @@ footer.src ul{margin:0;padding-left:18px;display:grid;gap:4px}
 footer.src a{color:var(--ink)}
 .made{display:flex;justify-content:center;align-items:center;gap:8px;font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 90px}
 .made a{color:var(--red);text-decoration:none}
+/* Cotización y contrato: hoja neutra, sin colores ni logo */
+.paper{background:#fff;color:#111;font:15px/1.6 Georgia,"Times New Roman",serif;border:1px solid #ddd;border-radius:4px;padding:28px 24px;margin-top:18px;overflow-wrap:anywhere}
+@media (min-width:700px){.paper{padding:56px 64px}}
+.paper:focus{outline:2px dashed #999;outline-offset:4px}
+.paper h1,.paper h2,.paper h3{font-family:inherit;color:#111;letter-spacing:0;text-transform:none;background:none;-webkit-text-stroke:0}
+.paper h1{font-size:22px;font-weight:700;text-align:center;margin:0 0 4px;line-height:1.3}
+.paper h2{font-size:16px;font-weight:700;margin:22px 0 6px;text-transform:uppercase;letter-spacing:.04em}
+.paper .meta{text-align:center;color:#444;font-size:13px;margin:0 0 22px}
+.paper table{min-width:0;width:100%;border-collapse:collapse;margin:8px 0}
+.paper th,.paper td{font:inherit;font-size:14px;color:#111;text-align:left;border:1px solid #bbb;padding:6px 8px;white-space:normal;letter-spacing:0;text-transform:none}
+.paper th{background:#f2f2f2;font-weight:700}
+.paper td.n,.paper th.n{text-align:right;white-space:nowrap}
+.paper ul{margin:4px 0 8px;padding-left:20px}
+.paper p{margin:6px 0}
+.paper .small{font-size:12.5px;color:#444}
+.paper .pb{break-before:page;page-break-before:always;margin-top:40px}
+.paper h2{break-after:avoid;page-break-after:avoid}
+.paper table,.paper .sign{break-inside:avoid}
+.paper .sign{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:56px}
+.paper .sign div{border-top:1px solid #111;padding-top:6px;font-size:13.5px}
+#printroot{display:none}
+.docform fieldset{border:1px solid var(--line);border-radius:12px;padding:14px 16px 16px;margin:0 0 16px}
+.docform legend{font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--red);padding:0 6px}
+.docform input[type=text],.docform input[type=email],.docform input[type=date],.docform select{font:500 15px var(--body);padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);width:100%}
+@media print{
+ @page{margin:16mm}
+ body{background:#fff!important}
+ body>*:not(#printroot){display:none!important}
+ #printroot{display:block!important;border:0;padding:0;margin:0;font-size:11pt}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -222,6 +252,7 @@ footer.src a{color:var(--ink)}
   </footer>
 </div>
 <p class="made">Una herramienta gratis de <a href="https://aprendeiadecero.com">Aprende IA de Cero</a></p>
+<div id="printroot" class="paper" aria-hidden="true"></div>
 <div class="mbar" id="mbar" aria-hidden="true"><span>Tu precio</span><b id="mprice" style="text-align:right">—</b></div>
 
 <script>
@@ -307,8 +338,8 @@ const FEATURES=[
  {id:'reports',n:'Reportes y gráficas',d:'números del negocio',h:12},
  {id:'lang',n:'Varios idiomas',d:'español, inglés…',h:10},
 ];
-const STEPS=['País','Qué haces','Qué lleva','Mensualidad','Pago','Valor','Resultado'];
-const DEF={saveH:null,salary:null,hpw:null,step:0,level:'start',types:[],tier:{},feats:[],plan:'std',vol:1,country:null,pay:null,foreign:false,value:null,price:null,market:null,ov:{}};
+const STEPS=['País','Qué haces','Qué lleva','Mensualidad','Pago','Valor','Resultado','Contrato'];
+const DEF={doc:{},saveH:null,salary:null,hpw:null,step:0,level:'start',types:[],tier:{},feats:[],plan:'std',vol:1,country:null,pay:null,foreign:false,value:null,price:null,market:null,ov:{}};
 const fresh=()=>JSON.parse(JSON.stringify(DEF));
 // ===== Mensualidad: servicios que pagas tú + uso incluido + tus horas cuidándola + ganancia =====
 // Precios oficiales, oct 2026 (ver «De dónde salen los números»)
@@ -388,12 +419,12 @@ function compute(cn){const rate=cn?aiRate(cn,V('ai')):V('rate');const hours=V('h
 function complexity(){const t=type();if(!t)return null;const extra=featHours();const r=extra/t.h;const n=extraFeats().length+t.count-1;const lvl=r<0.25&&n<=1?0:(r<0.75&&n<=3?1:2);return {lvl,name:['Baja','Media','Alta'][lvl],base:t.h,extra,pos:Math.min(97,4+r*70)}}
 const recPrice=()=>Math.ceil(compute().rec/10)*10;
 const price=()=>S.price??recPrice();
-const canNext=()=>[S.country,hasType(),1,1,S.pay,1][S.step]!=null;
+const canNext=()=>[S.country,hasType(),1,1,S.pay,1,1,1][S.step]!=null;
 const loc=v=>{const c=country();return c&&c[3]&&c[4]!=='USD'?'≈ '+money(v*c[3],c[4]):''};
 const lab=t=>`<span class="lab">${t}</span>`;
 
 function go(n){S.step=n;render();const p=$('progress');window.scrollTo({top:Math.max(0,p.getBoundingClientRect().top+scrollY-10),behavior:'smooth'})}
-function progress(){const maxOk=S.country==null?0:!hasType()?1:S.pay==null?4:6;
+function progress(){const maxOk=S.country==null?0:!hasType()?1:S.pay==null?4:7;
  $('progress').innerHTML=STEPS.map((s,i)=>`<button type="button" class="${i===S.step?'now':i<S.step?'done':''}" ${i>maxOk?'disabled':''} data-i="${i}"><i></i><em>0${i+1}</em><span>${s}</span></button>`).join('');
  $('progress').querySelectorAll('button').forEach(b=>b.onclick=()=>go(+b.dataset.i))}
 function nav(nextTxt){return `<div class="nav"><button class="btn ghost" type="button" id="back" ${S.step===0?'style="visibility:hidden"':''}>Atrás</button><button class="btn" type="button" id="next">${nextTxt||'Siguiente'}</button></div>`}
@@ -472,8 +503,8 @@ function stepValue(){const cu=cur();return wrapQ(6,'¿Cuánto le ayuda al negoci
  <label class="inline">O escribe otra cantidad<span>USD al mes</span><input type="number" id="valIn" min="0" step="10" inputmode="decimal" value="${S.value&&!VALS.includes(S.value)?S.value:''}" placeholder="Ej.: 300"></label>
  <div id="valBox" style="margin-top:20px" aria-live="polite"></div>`,'Ver mi cotización')}
 function render(){if(S.step>0&&!S.country)S.step=0;if(S.step>1&&!hasType())S.step=1;if(S.step>4&&!S.pay)S.step=4;
- progress();$('grid').classList.toggle('final',S.step===6);
- $('stage').innerHTML=[stepCountry,stepType,stepFeats,stepMaint,stepPay,stepValue,stepResult][S.step]();
+ progress();$('grid').classList.toggle('final',S.step>=6);
+ $('stage').innerHTML=[stepCountry,stepType,stepFeats,stepMaint,stepPay,stepValue,stepResult,stepDoc][S.step]();
  if(S.step===2)$('cx').innerHTML=cxBox();if(S.step===3)$('mnt').innerHTML=mntHTML();if(S.step===5)$('valBox').innerHTML=valHTML();if(S.step===1)$('deliv').innerHTML=delivPanel();
  bindStep();bindNav();live();save()}
 function bindStep(){const st=$('stage');
@@ -495,10 +526,10 @@ function bindStep(){const st=$('stage');
  if($('shIn'))$('shIn').addEventListener('input',e=>{S.saveH=num(e);press('[data-sh]',()=>false);vb()});
  if($('salIn'))$('salIn').addEventListener('input',e=>{S.salary=num(e);vb()});
  if($('hpwIn'))$('hpwIn').addEventListener('input',e=>{S.hpw=num(e);vb()});
- if(S.step===6)bindResult()}
+ if(S.step===6)bindResult();if(S.step===7)bindDoc()}
 
-function live(){const L=$('live'),M=$('mbar');L.hidden=S.step===6;
- if(S.step===6){M.classList.remove('on');return}
+function live(){const L=$('live'),M=$('mbar');L.hidden=S.step>=6;
+ if(S.step>=6){M.classList.remove('on');return}
  if(!hasType()){M.classList.remove('on');const c=country();L.innerHTML=c?`<div class="k">Tu hora en ${c[1]}</div><div class="big">${rmoney(suggestedRate(c))}</div><p class="tip">Cambia de país y mira cómo cambia. En la siguiente pregunta eliges qué vas a construir y aparece el precio.</p>`:`<div class="k">Tu precio</div><div class="big" style="color:var(--muted)">—</div><p class="tip">Elige el país de tu cliente y aquí vas viendo el precio cambiar con cada respuesta.</p>`;return}
  const r=compute();const x=complexity();const c=country();const rp=recPrice();
  L.innerHTML=`<div class="k">Precio recomendado, hasta ahora</div><div class="big">${money(rp)}</div><div class="loc">${c?(loc(rp)||'en dólares'):'aún sin país: precio de Estados Unidos'}</div>
@@ -540,7 +571,8 @@ function stepResult(){return `<section class="card"><div class="qnum">Tu cotizac
   <button class="btn" type="button" id="copy" style="margin-top:14px;width:100%">Copiar resumen para mandárselo</button><div class="copied" id="copied"></div><textarea class="fallback" id="fallback" hidden readonly></textarea></div>
  <details><summary>Ajustar los números (si ya sabes cuánto te toma o cuánto cobras)</summary><div class="dbody"><div class="fields">${ADV.map(([k,n,u])=>`<label>${n}<span>${u}</span><input type="number" data-a="${k}" min="0" step="any" inputmode="decimal"><button class="reset" type="button" data-r="${k}">usar el automático</button></label>`).join('')}</div></div></details>
  <details><summary>¿Y si el cliente estuviera en otro país?</summary><div class="dbody"><p class="sub">El mismo proyecto, con la tarifa ajustada a cada país.</p><div class="tablewrap"><table id="table"></table></div></div></details>
- <div class="nav"><button class="btn ghost" type="button" id="back">Atrás</button><button class="btn ghost" type="button" id="again">Hacer otra cotización</button></div></section>`}
+ <div class="nav"><button class="btn ghost" type="button" id="back">Atrás</button><button class="btn ghost" type="button" id="again">Hacer otra cotización</button></div>
+ <div class="panel" style="margin-top:20px;text-align:center"><h3>¿Listo para mandárselo?</h3><p class="sub" style="margin:4px 0 14px">Arma la cotización y el contrato con tus datos y los del cliente, y descárgalos en PDF.</p><button class="btn" type="button" id="toDoc">Armar cotización y contrato</button></div></section>`}
 function bindResult(){$('pRange').addEventListener('input',e=>{S.price=+e.target.value;$('pNum').value=S.price;updResult()});
  $('pNum').addEventListener('input',e=>{const v=parseFloat(e.target.value);S.price=isFinite(v)?v:0;updResult(true)});
  $('useRec').onclick=()=>{S.price=null;updResult()};
@@ -548,7 +580,7 @@ function bindResult(){$('pRange').addEventListener('input',e=>{S.price=+e.target
  const fill=()=>document.querySelectorAll('[data-a]').forEach(i=>{if(document.activeElement!==i)i.value=+(+V(i.dataset.a)).toFixed(2)});
  document.querySelectorAll('[data-a]').forEach(i=>i.addEventListener('input',()=>{const v=parseFloat(i.value);if(isFinite(v))S.ov[i.dataset.a]=v;else delete S.ov[i.dataset.a];S.price=null;updResult();fill()}));
  document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{delete S.ov[b.dataset.r];S.price=null;updResult();fill()});
- $('again').onclick=()=>{S=fresh();render()};
+ $('again').onclick=()=>{S=fresh();render()};$('toDoc').onclick=()=>go(7);
  $('copy').onclick=copy;fill();updResult()}
 function fees(p){const pct=V('fee')+(S.foreign&&S.pay==='stripe'?1.5:0),fix=V('fix');return {pct,one:p*pct/100+fix}}
 function updResult(fromNum){const r=compute();const c=country();const t=type();const x=complexity();const p=price();const VP=valueParts();const valYear=VP.total*12;const Z=zones(r,valYear);
@@ -584,9 +616,105 @@ function copy(){const r=compute();const t=type();const p=price();const inc=extra
  const fb=()=>{$('fallback').hidden=false;$('fallback').value=txt;$('fallback').select();$('copied').textContent='Selecciona el texto y cópialo.'};
  try{navigator.clipboard.writeText(txt).then(()=>{$('copied').textContent='Copiado. Pégalo en tu mensaje o cotización.'},fb)}catch(e){fb()}}
 
+// ===== Cotización + contrato (documento neutro para imprimir o guardar en PDF) =====
+// Reglas sugeridas por Aprende IA de Cero: no son datos medidos, cada uno las cambia.
+const DOCDEF={valid:15,rounds:2,review:5,warranty:30,pause:15,notice:30,scheme:'50'};
+const SCHEMES={'50':{n:'50% al empezar y 50% al entregar',p:[[50,'Al firmar, para empezar'],[50,'Al entregar el proyecto funcionando']]},
+ '3':{n:'3 partes: 40% · 30% · 30%',p:[[40,'Al firmar, para empezar'],[30,'Cuando la primera parte funciona y está en uso'],[30,'En la entrega final']]},
+ '100':{n:'100% al empezar',p:[[100,'Al firmar, para empezar']]}};
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const D=k=>(S.doc||{})[k]??DOCDEF[k];
+const ME_KEY='calc-mis-datos';
+function loadMe(){try{return JSON.parse(localStorage.getItem(ME_KEY)||'{}')}catch(e){return {}}}
+function saveMe(me){try{localStorage.setItem(ME_KEY,JSON.stringify(me))}catch(e){}}
+const PF=[['name','Tu nombre completo'],['company','Empresa o marca (opcional)'],['id','Documento o NIT/RFC/RUC'],['city','Ciudad y país'],['email','Correo'],['phone','Teléfono']];
+const CF=[['name','Nombre del negocio'],['rep','Persona que firma'],['id','Documento o NIT/RFC/RUC'],['city','Ciudad y país'],['email','Correo'],['phone','Teléfono']];
+const usesAI=()=>selTypes().some(t=>['bot','voice'].includes(t.id))||S.feats.includes('ai');
+const weeksAuto=()=>Math.max(1,Math.ceil(compute().hours/20));
+function party(p,role,fallback){const nm=p.company?`${esc(p.company)}, representada por ${esc(p.name||'________')}`:esc(p.name||fallback);
+ return `<b>${nm}</b>${p.id?`, documento ${esc(p.id)}`:''}${p.city?`, de ${esc(p.city)}`:''}${p.email?`, correo ${esc(p.email)}`:''}${p.phone?`, teléfono ${esc(p.phone)}`:''} («${role}»)`}
+function docHTML(){const me=loadMe(),cl=(S.doc.cli||{}),r=compute(),M=r.M,p=price(),c=country(),t=type(),L=selTypes(),ex=extraFeats(),V2=valueParts();
+ const today=new Date().toLocaleDateString('es',{day:'numeric',month:'long',year:'numeric'});
+ const start=S.doc.start?new Date(S.doc.start+'T12:00').toLocaleDateString('es',{day:'numeric',month:'long',year:'numeric'}):null;
+ const wk=S.doc.weeks||weeksAuto();const sch=SCHEMES[D('scheme')];const proj=esc(S.doc.proj||t.n);
+ const M$=v=>money(v)+(loc(v)?` (${loc(v)})`:'');
+ const provN=esc(me.company||me.name||'EL PROVEEDOR'),cliN=esc(cl.name||'EL CLIENTE');
+ const cuotas=sch.p.map(([pc,when])=>`<tr><td>${when}</td><td class="n">${pc}%</td><td class="n">${money(p*pc/100)}</td></tr>`).join('');
+ const deliv=L.map(x=>`<p><b>${esc(x.n)} · versión ${TIER[x.tl]}</b></p><ul>${x.inc.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`).join('')+(ex.length?`<p><b>Extras</b></p><ul>${ex.map(f=>`<li>${esc(f.n)}</li>`).join('')}</ul>`:'')+`<p>Siempre incluye: ${ALWAYS}</p>`;
+ const monthlyBlock=r.monthly?`<p>Plan de mantenimiento <b>${M.plan.n}</b>: <b>${M$(r.monthly)} al mes</b>. Incluye:</p><ul>${M.plan.inc.map(i=>`<li>${i}</li>`).join('')}</ul>${M.usage.length?`<p>Uso incluido cada mes: ${M.usage.map(u=>u.q.toLocaleString('es')+' '+u.n).join(', ')}. Si se pasa, cada uso extra cuesta: ${M.usage.map(u=>'$'+u.extra.toFixed(2)+' por '+u.u).join(', ')}.</p>`:''}<p>No incluye: ${NOTINC}</p>`:'';
+ let n=0;const cl_=(title,body)=>`<h2>${++n}. ${title}</h2>${body}`;
+ return `
+ <h1>Cotización</h1><p class="meta">${proj} · ${today}${me.company||me.name?' · '+esc(me.company||me.name):''}</p>
+ <p><b>Para:</b> ${esc(cl.name||'________________')}${cl.rep?' · '+esc(cl.rep):''}${cl.city?' · '+esc(cl.city):''}</p>
+ <p><b>De:</b> ${esc(me.name||'________________')}${me.company?' · '+esc(me.company):''}${me.email?' · '+esc(me.email):''}${me.phone?' · '+esc(me.phone):''}</p>
+ <h2>Lo que se entrega</h2>${deliv}
+ <h2>Lo que no incluye</h2><p>Funciones o cambios que no estén en esta lista (se cotizan aparte), el contenido del negocio (textos, fotos, precios), que entrega el cliente, y el uso por encima de lo incluido en la mensualidad.</p>
+ <h2>Precio y pagos</h2>
+ <table><tr><th>Concepto</th><th class="n">Valor</th></tr>
+ ${r.pack?`<tr><td>Por separado</td><td class="n"><s>${money(Math.ceil(r.solo/10)*10)}</s></td></tr><tr><td>Descuento por paquete (${r.pack}%)</td><td class="n">− ${money(Math.ceil(r.solo/10)*10-p)}</td></tr>`:''}
+ <tr><td><b>Construcción</b></td><td class="n"><b>${M$(p)}</b></td></tr>
+ ${r.monthly?`<tr><td><b>Mensualidad</b> (plan ${M.plan.n}, empieza cuando el sistema ya está en uso)</td><td class="n"><b>${M$(r.monthly)}</b></td></tr>`:''}
+ <tr><td>Total del primer año</td><td class="n">${M$(p+r.monthly*12)}</td></tr></table>
+ <table><tr><th>Pago de la construcción</th><th class="n">%</th><th class="n">Valor</th></tr>${cuotas}</table>
+ <p>Forma de pago: ${esc(PAY[S.pay].n)}. Plazo estimado: <b>${wk} ${wk>1?'semanas':'semana'}</b>.</p>
+ ${monthlyBlock?`<h2>Mensualidad</h2>${monthlyBlock}`:''}
+ ${V2.total||V2.hM?`<h2>Lo que gana el negocio</h2><ul>${V2.hM?`<li>Le devuelve unas ${hfmt(V2.hM)} horas al mes (≈ ${hfmt(V2.days)} días de trabajo).</li>`:''}${V2.timeV?`<li>Esas horas valen ≈ ${M$(V2.timeV)} al mes.</li>`:''}${V2.extra?`<li>Dinero extra estimado: ${M$(V2.extra)} al mes.</li>`:''}${payback(p,r.monthly,V2)?`<li>Después de la mensualidad, la construcción se paga sola en unos ${payback(p,r.monthly,V2)} meses.</li>`:''}</ul>`:''}
+ <p class="small">Esta cotización es un <b>estimado</b> con base en lo conversado y es válida por ${D('valid')} días. El precio final y las condiciones quedan en el contrato.</p>
+
+ <div class="pb"></div>
+ <h1>Contrato de prestación de servicios</h1><p class="meta">${proj}</p>
+ <p>Entre ${party(me,'EL PROVEEDOR','________________')}, y ${party({...cl,company:cl.name,name:cl.rep},'EL CLIENTE','________________')}, acuerdan lo siguiente:</p>
+ ${cl_('Objeto',`<p>EL PROVEEDOR construye para EL CLIENTE: <b>${esc(t.n)}</b>. Lo que se entrega es lo que dice la cotización adjunta (Anexo A), que hace parte de este contrato. Si la cotización y este contrato dicen algo distinto, manda este contrato.</p>`)}
+ ${cl_('Lo que no incluye',`<p>Todo lo que no esté en el Anexo A. Si EL CLIENTE pide algo nuevo, EL PROVEEDOR lo cotiza por escrito y se hace solo cuando EL CLIENTE lo aprueba. EL CLIENTE entrega a tiempo el contenido del negocio (textos, fotos, precios, horarios) y los accesos que se necesiten.</p>`)}
+ ${cl_('Plazo',`<p>El trabajo empieza ${start?'el '+start:'en la fecha del primer pago'} y dura unas <b>${wk} ${wk>1?'semanas':'semana'}</b>. Si EL CLIENTE se demora en entregar contenido, accesos o respuestas, el plazo se corre los mismos días.</p>`)}
+ ${cl_('Precio y pagos',`<p>El precio de la construcción es <b>${M$(p)}</b>, pagado así:</p><table><tr><th>Cuándo</th><th class="n">%</th><th class="n">Valor</th></tr>${cuotas}</table><p>Forma de pago: ${esc(PAY[S.pay].n)}. Sin la firma de este contrato y el primer pago no se empieza el trabajo.</p>`)}
+ ${cl_('Revisiones y entrega',`<p>Cada entrega incluye <b>${D('rounds')} ${D('rounds')==1?'ronda':'rondas'}</b> de ajustes. Rondas adicionales se cotizan aparte. EL CLIENTE tiene <b>${D('review')} días hábiles</b> para revisar cada entrega; si no hace observaciones en ese tiempo, la entrega se da por aceptada.</p>`)}
+ ${cl_('Garantía',`<p>Durante <b>${D('warranty')} días</b> después de la entrega final, EL PROVEEDOR arregla sin costo lo que no funcione como se acordó en el Anexo A. La garantía no cubre cambios nuevos, ni fallas causadas por cambios hechos por EL CLIENTE o por terceros.</p>`)}
+ ${r.monthly?cl_('Mantenimiento mensual',monthlyBlock+`<p>La mensualidad empieza cuando el sistema ya está en uso, se paga por adelantado cada mes y cualquiera de las partes puede terminarla avisando por escrito con <b>${D('notice')} días</b> de anticipación. Un cambio de precio se avisa con la misma anticipación.</p>`):''}
+ ${cl_('Cuentas y servicios de terceros',`<p>Las cuentas de los servicios que usa el sistema (hosting, dominio, base de datos${usesAI()?', inteligencia artificial':''}${M.usage.some(u=>u.k==='min')?', número de teléfono':''}${M.usage.some(u=>u.k==='msg')?', WhatsApp':''}) quedan a nombre de EL CLIENTE. EL PROVEEDOR entra como usuario invitado, y EL CLIENTE puede quitarle el acceso al terminar. ${r.monthly?'El costo de esos servicios va incluido en la mensualidad hasta lo indicado; el uso por encima se cobra según el pago por uso.':'EL CLIENTE paga directamente esos servicios.'} EL PROVEEDOR no responde por caídas, cambios de precio o cambios de reglas de esos servicios.</p>`)}
+ ${usesAI()?cl_('Uso de inteligencia artificial',`<p>El sistema usa inteligencia artificial, que puede equivocarse. Por eso: el asistente dice que es un asistente y siempre deja hablar con una persona; no promete precios, fechas ni disponibilidad que no estén en la información del negocio; no mueve dinero ni toma decisiones importantes sin una persona. EL CLIENTE mantiene al día la información que usa el asistente. EL PROVEEDOR no garantiza resultados de negocio (ventas, clientes o ahorros), que dependen de muchos factores.</p>`):''}
+ ${cl_('Datos y confidencialidad',`<p>Las dos partes guardan reserva sobre la información que conozcan por este trabajo. EL PROVEEDOR usa los datos de los clientes de EL CLIENTE solo para este proyecto, guarda lo mínimo necesario y prueba con datos de ejemplo cuando se puede. Datos delicados (salud, dinero, menores de edad) solo se manejan si se acuerda por escrito.</p>`)}
+ ${cl_('Propiedad',`<p>Cuando EL CLIENTE paga todo, lo construido para este proyecto es de EL CLIENTE. EL PROVEEDOR conserva sus herramientas, plantillas y conocimientos previos, y puede seguir usándolos en otros trabajos. EL PROVEEDOR puede mostrar este trabajo en su portafolio sin datos privados, salvo que EL CLIENTE lo prohíba por escrito.</p>`)}
+ ${cl_('Pagos atrasados',`<p>Si un pago se atrasa más de <b>${D('pause')} días</b>, EL PROVEEDOR puede pausar el trabajo o el mantenimiento hasta que se ponga al día. Los plazos se corren los días de la pausa.</p>`)}
+ ${cl_('Terminación',`<p>Cualquiera de las partes puede terminar este contrato avisando por escrito. EL CLIENTE paga el trabajo hecho hasta ese día; lo ya pagado por trabajo hecho no se devuelve. EL PROVEEDOR entrega lo avanzado que esté pagado.</p>`)}
+ ${cl_('Responsabilidad',`<p>La responsabilidad total de EL PROVEEDOR por este contrato no supera lo que EL CLIENTE le haya pagado por él. Ninguna de las partes responde por pérdidas indirectas, como ganancias que se dejaron de recibir.</p>`)}
+ ${cl_('Diferencias',`<p>Si hay un desacuerdo, las partes primero buscan resolverlo hablando. Si no se logra, se resuelve según las leyes de <b>${esc(S.doc.venue||(c?c[1]:'________'))}</b>.</p>`)}
+ <p>Se firma en ${esc(cl.city||me.city||'________')}, el ${today}.</p>
+ <div class="sign"><div>${esc(me.name||'EL PROVEEDOR')}${me.company?'<br>'+esc(me.company):''}<br><span class="small">${me.id?'Doc. '+esc(me.id):'Documento:'}</span></div><div>${esc(cl.rep||'EL CLIENTE')}${cl.name?'<br>'+esc(cl.name):''}<br><span class="small">${cl.id?'Doc. '+esc(cl.id):'Documento:'}</span></div></div>
+ <p class="small" style="margin-top:28px">Anexo A: la cotización de las páginas anteriores.</p>`}
+function stepDoc(){const me=loadMe(),cl=S.doc.cli||{};
+ const inp=(grp,k,lab,v,type)=>`<label>${lab}<input type="${type||'text'}" data-g="${grp}" data-k="${k}" value="${esc(v??'')}" autocomplete="off"></label>`;
+ const num=(k,lab,u)=>`<label>${lab}<span>${u}</span><input type="number" min="0" step="1" data-g="rule" data-k="${k}" value="${D(k)}"></label>`;
+ return `<section class="card docform"><div class="qnum">Cotización y contrato</div><h2>Arma el documento para tu cliente</h2>
+ <p class="sub">Llena tus datos y los del cliente. La hoja de abajo se arma sola, en blanco y negro y sin logos, lista para firmar.</p>
+ <div class="why">${lab('Importante')}Los precios son un <b>estimado</b> y este contrato es una <b>guía</b> escrita en palabras sencillas, no asesoría legal. Revísalo, cámbialo a tu caso y, si el proyecto es grande, pásalo por un abogado de tu país.</div>
+ <fieldset><legend>Tus datos</legend><div class="fields">${PF.map(([k,l])=>inp('me',k,l,me[k],k==='email'?'email':'text')).join('')}</div><p class="sub" style="margin:10px 0 0;font-size:13px">Se guardan solo en este navegador, para la próxima vez.</p></fieldset>
+ <fieldset><legend>Datos del cliente</legend><div class="fields">${CF.map(([k,l])=>inp('cli',k,l,cl[k],k==='email'?'email':'text')).join('')}</div></fieldset>
+ <fieldset><legend>El proyecto</legend><div class="fields">${inp('doc','proj','Nombre del proyecto',S.doc.proj||'')}
+  ${inp('doc','start','Fecha de inicio',S.doc.start||'','date')}
+  <label>Semanas de trabajo<span>sugerido: ${weeksAuto()} (unas 20 h por semana)</span><input type="number" min="1" step="1" data-g="doc" data-k="weeks" value="${S.doc.weeks||''}" placeholder="${weeksAuto()}"></label>
+  <label>Cómo te paga la construcción<select data-g="doc" data-k="scheme">${Object.entries(SCHEMES).map(([k,v])=>`<option value="${k}" ${D('scheme')===k?'selected':''}>${v.n}</option>`).join('')}</select></label>
+  ${inp('doc','venue','Leyes de qué país aplican',S.doc.venue||'')}</div></fieldset>
+ <fieldset><legend>Tus reglas</legend><p class="sub" style="margin:0 0 10px;font-size:14px">Vienen con una sugerencia. Cámbialas a como trabajas tú.</p><div class="fields">
+  ${num('valid','Validez de la cotización','días')}${num('rounds','Rondas de ajustes por entrega','rondas')}${num('review','Días para revisar cada entrega','días hábiles')}${num('warranty','Garantía después de entregar','días')}${num('pause','Pausa si un pago se atrasa más de','días')}${num('notice','Aviso para terminar la mensualidad','días')}</div></fieldset>
+ <div class="nav" style="border-top:0;padding-top:0;margin-top:0"><button class="btn ghost" type="button" id="back">Atrás</button><button class="btn" type="button" id="pdf">Descargar PDF</button></div>
+ <p class="sub" style="margin:12px 0 0;font-size:13.5px">Al tocar «Descargar PDF», elige <b>Guardar como PDF</b> en la ventana que se abre. También puedes corregir cualquier texto tocándolo en la hoja (hazlo al final: si cambias el formulario, la hoja se vuelve a armar).</p>
+ <div class="paper" id="docPrev" contenteditable="true" spellcheck="false"></div></section>`}
+function bindDoc(){const prev=()=>{$('docPrev').innerHTML=docHTML()};
+ document.querySelectorAll('.docform [data-g]').forEach(i=>i.addEventListener('input',()=>{const g=i.dataset.g,k=i.dataset.k,v=i.value.trim();
+  if(g==='me'){const me=loadMe();me[k]=v;saveMe(me)}
+  else if(g==='cli'){S.doc.cli={...(S.doc.cli||{}),[k]:v}}
+  else if(g==='rule'){const n=parseFloat(v);if(isFinite(n)&&n>=0)S.doc[k]=n;else delete S.doc[k]}
+  else if(k==='weeks'){const n=parseInt(v);if(n>0)S.doc.weeks=n;else delete S.doc.weeks}
+  else S.doc[k]=v;
+  prev();save()}));
+ $('back').onclick=()=>go(6);
+ $('pdf').onclick=()=>{$('printroot').innerHTML=$('docPrev').innerHTML;const t=document.title;document.title=('Cotizacion y contrato - '+((S.doc.cli||{}).name||type().n)).replace(/[\\/:*?"<>|]/g,'');window.print();document.title=t};
+ prev()}
+
 $('demo').onclick=()=>{S=Object.assign(fresh(),{step:6,types:['app'],tier:{app:'b'},feats:[],plan:'basic',vol:1,country:'COL',pay:'transfer',value:50,saveH:5});render();go(6)};
 $('restart').onclick=()=>{S=fresh();go(0)};
-const redraw=()=>{if(S.step===6)updResult();else if(S.step===2)$('cx').innerHTML=cxBox()};
+const redraw=()=>{if(S.step===7&&$('docPrev'))$('docPrev').innerHTML=docHTML();if(S.step===6)updResult();else if(S.step===2)$('cx').innerHTML=cxBox()};
 matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',redraw);new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 load();render();
 </script>
