@@ -222,7 +222,7 @@ footer.src a{color:var(--ink)}
   </footer>
 </div>
 <p class="made">Una herramienta gratis de <a href="https://aprendeiadecero.com">Aprende IA de Cero</a></p>
-<div class="mbar" id="mbar" aria-hidden="true"><span>Precio recomendado</span><b id="mprice">—</b></div>
+<div class="mbar" id="mbar" aria-hidden="true"><span>Tu precio</span><b id="mprice" style="text-align:right">—</b></div>
 
 <script>
 // BLS, mayo 2025, desarrolladores web en EE.UU. Anual ÷ 2.080 horas (año laboral de BLS)
@@ -478,7 +478,7 @@ function live(){const L=$('live'),M=$('mbar');L.hidden=S.step===6;
  ${r.pack?`<div class="loc">por separado serían <s>${money(Math.ceil(r.solo/10)*10)}</s> · paquete −${r.pack}%</div>`:''}
  <ul><li><span>Trabajo</span><b>${type().n}</b></li><li><span>Complejidad</span><b>${x.name}</b></li><li><span>Horas</span><b>${r.hours} h</b></li><li><span>Ajuste por IA</span><b>−${V('ai')}%</b></li><li><span>Tu hora</span><b>${rmoney(r.rate)}</b></li><li><span>Mensualidad (${r.M.plan.n})</span><b>${money(r.monthly)}</b></li></ul>
  <p class="tip">${S.step===3?'Cambia el plan y mira cómo cambia la mensualidad.':S.step===2?'Marca un extra y mira cómo sube.':S.step===1?'Marca otro servicio y mira cómo sube.':'Con cada respuesta el precio se ajusta.'}</p>`;
- M.classList.add('on');$('mprice').innerHTML=money(rp)+`<small style="font:600 12px var(--mono);margin-left:6px;opacity:.9">+ ${money(r.monthly)}/mes</small>`}
+ M.classList.add('on');$('mprice').innerHTML=money(rp)+`<small style="display:block;font:600 12px var(--mono);opacity:.9">+ ${money(r.monthly)}/mes</small>`}
 
 function zones(r,valYear){const top=Math.max(r.rec*2.2,(S.market||0)*1.15,valYear?valYear*1.25:0,r.floor*2.6);
  const z=[[0,r.floor,'--z-lose','Pierdes','Por debajo de tu piso: no cubres tus horas ni tus costos.'],[r.floor,r.rec,'--z-fair','Justo','Cubres tu trabajo, pero casi no te queda ganancia.'],[r.rec,r.rec*1.5,'--z-good','Buen precio','Cubres todo y te queda ganancia.']];
