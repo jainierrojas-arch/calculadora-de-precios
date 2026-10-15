@@ -149,6 +149,10 @@ details[open] summary::after{content:"−"}
 .fields label{display:grid;gap:4px;font:600 14px var(--body)}
 .fields label span{font:500 12.5px var(--body);color:var(--muted)}
 .reset{font:600 12.5px var(--body);color:var(--red);background:none;border:0;padding:0;cursor:pointer;justify-self:start;text-align:left}
+.tierh{font:700 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin:18px 0 8px}
+.tiers{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.tiers .opt small{line-height:1.6;margin-top:8px}
+.tp{display:block;font:400 24px/1.1 var(--display);color:var(--red);margin-top:4px}
 .tablewrap{overflow-x:auto}
 table{border-collapse:collapse;width:100%;min-width:560px;font-variant-numeric:tabular-nums}
 th,td{text-align:right;padding:9px 10px;border-bottom:1px solid var(--line);font-size:14px;white-space:nowrap}
@@ -257,16 +261,39 @@ const PAY={
  usdt:{n:'USDT (Binance Pay)',d:'dólar digital',fee:null,fix:null,note:'En Venezuela mucha gente ya tiene USDT. Revisa la comisión de tu plataforma.'},
 };
 const TYPES=[
- {id:'web',mh:1.5,host:'free',dom:1,n:'Página web',d:'una web para mostrar el negocio',h:24,inc:["Diseño a la medida del negocio (hasta 5 secciones)", "Versión para celular", "Botón de WhatsApp o formulario de contacto", "Dominio y publicación en internet", "Lo básico para aparecer en Google", "Candado de seguridad (https)"]},
- {id:'shop',mh:3,host:'netlify',dom:1,n:'Tienda en línea',d:'catálogo y pedidos',h:60,inc:["Catálogo de productos con fotos y precios", "Carrito de compras", "Pedidos que le llegan al dueño", "Control de inventario básico", "Opciones de entrega o retiro en tienda", "Versión para celular"]},
- {id:'auto',mh:2,host:'n8n',use:'exec',n:'Automatización',d:'correos, avisos y tareas que se hacen solas',h:20,inc:["Revisión del proceso que se va a automatizar", "Conexión entre las herramientas que ya usa", "Correos o avisos que salen solos", "Pruebas con casos reales", "Instrucciones para el dueño"]},
- {id:'bot',mh:3,host:'netlify',use:'conv',n:'Chatbot o agente',d:'responde clientes por WhatsApp o en la web',h:36,inc:["Respuestas con la información del negocio", "Conexión a WhatsApp o a la web", "Pasa la conversación a una persona cuando hace falta", "Guarda los datos de los clientes interesados", "Pruebas y ajustes de las respuestas"]},
- {id:'voice',mh:3,host:'voice',use:'min',n:'Agente de voz',d:'contesta llamadas',h:56,inc:["Voz natural que contesta llamadas", "Guion con la información del negocio", "Toma citas o pedidos por teléfono", "Pasa la llamada a una persona cuando hace falta", "Resumen de cada llamada"]},
- {id:'app',mh:3,host:'netlify',dom:1,n:'App a medida',d:'reservas, pedidos, turnos',h:80,inc:["Pantallas a la medida (reservas, pedidos o turnos)", "Base de datos de clientes", "Calendario o lista de pedidos", "Versión para celular", "Publicación en internet", "Capacitación al dueño"]},
- {id:'crm',mh:3,host:'netlify',dom:1,n:'CRM de clientes',d:'contactos y seguimiento de ventas',h:90,inc:["Lista de clientes con su historial", "Etapas de venta (nuevo, en contacto, cliente)", "Notas y tareas de seguimiento", "Recordatorios de a quién contactar", "Búsqueda y filtros", "Importar los contactos que ya tiene"]},
- {id:'report',mh:2,host:'netlify',dom:1,n:'Panel de reportes',d:'ventas y números del negocio',h:48,inc:["Conexión a los datos de ventas", "Gráficas de ventas, gastos y clientes", "Filtros por fecha", "Los números clave a la vista", "Exportar a Excel o PDF"]},
- {id:'panel',mh:6,host:'netlify',dom:1,n:'Sistema completo',d:'para manejar todo el negocio',h:140,inc:["Todo lo de una app a medida", "Usuarios con permisos (dueño y empleados)", "Inventario, ventas y clientes en un solo lugar", "Reportes del negocio", "Capacitación al equipo", "Manual de uso"]},
+ {id:'web',n:'Página web',d:'una web para mostrar el negocio',host:'free',dom:1,
+  b:{h:12,mh:1,inc:['Una página con la información del negocio (hasta 3 secciones)','Versión para celular','Botón de WhatsApp','Dominio y publicación en internet','Candado de seguridad (https)']},
+  p:{h:24,mh:1.5,inc:['Todo lo de la Básica','Diseño a la medida (hasta 6 secciones)','Galería de fotos o de servicios','Formulario de contacto','Lo básico para aparecer en Google y en Google Maps']}},
+ {id:'shop',n:'Tienda en línea',d:'catálogo y pedidos',host:'netlify',dom:1,
+  b:{h:30,mh:2,inc:['Catálogo de hasta 30 productos con fotos y precios','Pedidos que le llegan al dueño por WhatsApp','Versión para celular','Publicación en internet']},
+  p:{h:60,mh:3,has:['pay','admin'],inc:['Todo lo de la Básica','Productos sin límite, con categorías y búsqueda','Carrito de compras','Pagos en línea','Control de inventario básico','Opciones de entrega o retiro en tienda','Panel para el dueño']}},
+ {id:'auto',n:'Automatización',d:'correos, avisos y tareas que se hacen solas',host:'n8n',use:'exec',
+  b:{h:10,mh:1.5,inc:['Una tarea que se hace sola','Conexión entre 2 herramientas que ya usa','Pruebas con casos reales','Instrucciones para el dueño']},
+  p:{h:20,mh:2,inc:['Todo lo de la Básica','Hasta 3 tareas que se hacen solas','Conexión con todas las herramientas que ya usa','Aviso por correo o WhatsApp si algo falla']}},
+ {id:'bot',n:'Chatbot o agente',d:'responde clientes por WhatsApp o en la web',host:'netlify',use:'conv',
+  b:{h:18,mh:2,inc:['Responde las preguntas frecuentes con la información del negocio','En WhatsApp o en la web (uno de los dos)','Pasa la conversación a una persona cuando hace falta','Pruebas y ajustes de las respuestas']},
+  p:{h:36,mh:3,inc:['Todo lo de la Básica','En WhatsApp y en la web','Toma citas o pedidos','Guarda los datos de los clientes interesados']}},
+ {id:'voice',n:'Agente de voz',d:'contesta llamadas',host:'voice',use:'min',
+  b:{h:28,mh:2,inc:['Voz natural que contesta llamadas','Responde las preguntas frecuentes','Toma el recado y se lo manda al dueño','Pasa la llamada a una persona cuando hace falta']},
+  p:{h:56,mh:3,inc:['Todo lo de la Básica','Toma citas o pedidos por teléfono y los anota','Resumen de cada llamada','Guion ajustado junto con el dueño']}},
+ {id:'app',n:'App a medida',d:'reservas, pedidos, turnos',host:'netlify',dom:1,
+  b:{h:36,mh:2,inc:['Reservas, pedidos o turnos desde el celular','Calendario con lo del día','Confirmación por correo al cliente','Publicación en internet','Explicación de cómo usarla']},
+  p:{h:80,mh:3,has:['notify','admin'],inc:['Todo lo de la Básica','Base de clientes con su historial','Recordatorios por WhatsApp o correo','Panel para el dueño','Varios empleados, cada uno con su agenda','Capacitación al equipo']}},
+ {id:'crm',n:'CRM de clientes',d:'contactos y seguimiento de ventas',host:'netlify',dom:1,
+  b:{h:40,mh:2,inc:['Lista de clientes con sus datos y notas','Etapas de venta (nuevo, en contacto, cliente)','Búsqueda y filtros','Importar los contactos que ya tiene']},
+  p:{h:90,mh:3,has:['login','reports'],inc:['Todo lo de la Básica','Historial de cada cliente','Tareas y recordatorios de a quién contactar','Inicio de sesión para el equipo','Reportes y gráficas de ventas']}},
+ {id:'report',n:'Panel de reportes',d:'ventas y números del negocio',host:'netlify',dom:1,
+  b:{h:24,mh:1.5,inc:['Conexión a una fuente de datos (ventas o Excel)','Los números clave a la vista','Filtros por fecha']},
+  p:{h:48,mh:2,inc:['Todo lo de la Básica','Varias fuentes de datos juntas','Gráficas de ventas, gastos y clientes','Exportar a Excel o PDF','Reporte que llega solo cada semana']}},
+ {id:'panel',n:'Sistema completo',d:'para manejar todo el negocio',host:'netlify',dom:1,
+  b:{h:80,mh:4,has:['login'],inc:['Ventas, clientes e inventario en un solo lugar','Usuarios para el dueño y los empleados','Versión para celular','Capacitación al dueño']},
+  p:{h:140,mh:6,has:['login','reports','multi'],inc:['Todo lo de la Básica','Permisos distintos para cada empleado','Reportes del negocio','Varios locales','Capacitación al equipo y manual de uso']}},
 ];
+// versión de cada servicio: b = Básica (lo más importante), p = Premium (más cosas, más valor)
+const TIER={b:'Básica',p:'Premium'};
+const tierOf=id=>(S.tier||{})[id]||'b';
+// en la Premium, lo que se entrega es todo lo de la Básica más lo suyo
+const eff=t=>{const tl=tierOf(t.id);return {...t,...t[tl],tl,inc:tl==='p'?[...t.b.inc,...t.p.inc.slice(1)]:t.b.inc}};
 // m=1: trabaja todos los meses, suma una hora de mantenimiento; use: se paga por uso
 const FEATURES=[
  {id:'login',n:'Inicio de sesión',d:'cada usuario entra con su cuenta',h:12},
@@ -281,7 +308,7 @@ const FEATURES=[
  {id:'lang',n:'Varios idiomas',d:'español, inglés…',h:10},
 ];
 const STEPS=['País','Qué haces','Qué lleva','Mensualidad','Pago','Valor','Resultado'];
-const DEF={step:0,level:'start',types:[],feats:[],plan:'std',vol:1,country:null,pay:null,foreign:false,value:null,price:null,market:null,ov:{}};
+const DEF={step:0,level:'start',types:[],tier:{},feats:[],plan:'std',vol:1,country:null,pay:null,foreign:false,value:null,price:null,market:null,ov:{}};
 const fresh=()=>JSON.parse(JSON.stringify(DEF));
 // ===== Mensualidad: servicios que pagas tú + uso incluido + tus horas cuidándola + ganancia =====
 // Precios oficiales, oct 2026 (ver «De dónde salen los números»)
@@ -307,8 +334,11 @@ const PLANS={
 };
 const NOTINC='Funciones nuevas (se cotizan aparte) y el uso por encima de lo incluido.';
 const plan=()=>PLANS[S.plan]||PLANS.std;
-const selTypes=()=>TYPES.filter(t=>S.types.includes(t.id));
-const selFeats=()=>FEATURES.filter(f=>S.feats.includes(f.id));
+const selTypes=()=>TYPES.filter(t=>S.types.includes(t.id)).map(eff);
+// lo que ya trae la versión Premium no se cobra otra vez como extra
+const incF=()=>new Set(selTypes().flatMap(t=>t.has||[]));
+const extraFeats=()=>{const I=incF();return FEATURES.filter(f=>S.feats.includes(f.id)&&!I.has(f.id))};
+const selFeats=()=>{const I=incF();return FEATURES.filter(f=>S.feats.includes(f.id)||I.has(f.id))};
 const mHoursAuto=()=>(selTypes().reduce((a,t)=>a+t.mh,0)+selFeats().filter(f=>f.m).length)*plan().x;
 function infraParts(c){const L=selTypes(),fix=[];
  if(L.some(t=>t.dom))fix.push(['Dominio .com (al año ÷ 12)',DOMAIN_Y/12]);
@@ -334,10 +364,10 @@ const money=(v,c)=>{if(v==null||!isFinite(v))return '—';try{return new Intl.Nu
 const rmoney=v=>{try{return new Intl.NumberFormat('es-419',{style:'currency',currency:'USD',minimumFractionDigits:v%1?2:0,maximumFractionDigits:2}).format(v)}catch(e){return 'USD '+v}};
 const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 // varios servicios a la vez: se suman sus horas
-const type=()=>{const L=TYPES.filter(t=>S.types.includes(t.id));return L.length?{n:L.map(t=>t.n).join(' + '),h:L.reduce((a,t)=>a+t.h,0),many:L.length>1,count:L.length}:undefined};
+const type=()=>{const L=selTypes();return L.length?{n:L.map(t=>t.n+' '+TIER[t.tl]).join(' + '),h:L.reduce((a,t)=>a+t.h,0),many:L.length>1,count:L.length}:undefined};
 const hasType=()=>S.types.length?1:null;
 const country=()=>COUNTRIES.find(c=>c[0]===S.country);
-const featHours=()=>FEATURES.filter(f=>S.feats.includes(f.id)).reduce((a,f)=>a+f.h,0);
+const featHours=()=>extraFeats().reduce((a,f)=>a+f.h,0);
 const monthlyFeats=()=>FEATURES.filter(f=>f.m&&S.feats.includes(f.id)).length;
 const suggestedRate=c=>Math.round(baseRate()*c[2]*2)/2;
 function save(){try{localStorage.setItem('calc-cotizacion-v3',JSON.stringify(S))}catch(e){}}
@@ -355,7 +385,7 @@ const V=k=>S.ov[k]??auto()[k];
 // descuento por paquete: 2 servicios 10%, 3 servicios 15%, 4 o más 20% (editable en «Ajustar los números»)
 const PACK=[0,0,10,15,20];
 function compute(cn){const rate=cn?aiRate(cn,V('ai')):V('rate');const hours=V('hours');const work=hours*rate;const floor=work+V('setup');const solo=floor*(1+V('margin')/100);const pack=S.types.length>1?V('pack'):0;const rec=solo*(1-pack/100);const M=maint(cn);const srate=M.srate;const monthly=M.total;return {rate,srate,hours,work,floor,solo,pack,rec,monthly,M}}
-function complexity(){const t=type();if(!t)return null;const extra=featHours();const r=extra/t.h;const n=S.feats.length+t.count-1;const lvl=r<0.25&&n<=1?0:(r<0.75&&n<=3?1:2);return {lvl,name:['Baja','Media','Alta'][lvl],base:t.h,extra,pos:Math.min(97,4+r*70)}}
+function complexity(){const t=type();if(!t)return null;const extra=featHours();const r=extra/t.h;const n=extraFeats().length+t.count-1;const lvl=r<0.25&&n<=1?0:(r<0.75&&n<=3?1:2);return {lvl,name:['Baja','Media','Alta'][lvl],base:t.h,extra,pos:Math.min(97,4+r*70)}}
 const recPrice=()=>Math.ceil(compute().rec/10)*10;
 const price=()=>S.price??recPrice();
 const canNext=()=>[S.country,hasType(),1,1,S.pay,1][S.step]!=null;
@@ -370,15 +400,19 @@ function nav(nextTxt){return `<div class="nav"><button class="btn ghost" type="b
 function bindNav(){if($('back'))$('back').onclick=()=>go(S.step-1);const n=$('next');if(n){n.disabled=!canNext();n.onclick=()=>go(S.step+1)}}
 function wrapQ(i,q,sub,why,body,nextTxt){return `<section class="card"><div class="qnum"><b>0${i}</b>de 06</div><h2>${q}</h2><p class="sub">${sub}</p><div class="why">${lab('¿Por qué importa?')}${why}</div>${body}${nav(nextTxt)}</section>`}
 
-function stepType(){return wrapQ(2,'¿Qué le vas a construir?','Marca lo que te pidió el cliente. Si son varias cosas (por ejemplo, una página web y un chatbot), márcalas todas. Si lleva 2 o más, se le hace un precio de paquete: más barato que pedir cada cosa por separado.','Cada tipo de trabajo lleva distinto tiempo. Las horas que ves son un ejemplo de cuánto toma trabajando con IA; si a ti te toma más o menos, lo cambias al final.',
- `<div class="opts">${TYPES.map(t=>`<button type="button" class="opt" data-t="${t.id}" aria-pressed="${S.types.includes(t.id)}">${t.n}<small>${t.d}</small><span class="h">unas ${t.h} horas</span></button>`).join('')}</div>
+function stepType(){return wrapQ(2,'¿Qué le vas a construir?','Marca lo que te pidió el cliente. Si son varias cosas (por ejemplo, una página web y un chatbot), márcalas todas. Si lleva 2 o más, se le hace un precio de paquete: más barato que pedir cada cosa por separado. Abajo eliges si cada uno va en versión Básica o Premium.','Cada tipo de trabajo lleva distinto tiempo. Las horas que ves son un ejemplo de cuánto toma trabajando con IA; si a ti te toma más o menos, lo cambias al final.',
+ `<div class="opts">${TYPES.map(t=>`<button type="button" class="opt" data-t="${t.id}" aria-pressed="${S.types.includes(t.id)}">${t.n}<small>${t.d}</small><span class="h">Básica ${t.b.h} h · Premium ${t.p.h} h</span></button>`).join('')}</div>
  <div id="deliv"></div>`)}
 const ALWAYS='Pruebas antes de entregar, publicación y explicación de cómo usarlo.';
-const delivPanel=()=>S.types.length?`<div class="panel" style="margin-top:18px"><h3>Lo que vas a entregar</h3>${delivHTML()}</div>`:'';
-function delivHTML(){const L=TYPES.filter(t=>S.types.includes(t.id));if(!L.length)return '';const ex=FEATURES.filter(f=>S.feats.includes(f.id));
- return `<div class="deliv">${L.map(t=>`<div><h4>${t.n}</h4><ul>${t.inc.map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('')}${ex.length?`<div><h4>Extras</h4><ul>${ex.map(f=>`<li>${f.n}</li>`).join('')}</ul></div>`:''}</div><p class="sub" style="margin:10px 0 0">Siempre incluye: ${ALWAYS}</p>`}
+// precio del proyecto completo si este servicio fuera Básica o Premium
+function tierPrice(id,k){const o=S.tier[id];S.tier[id]=k;const v=recPrice();if(o==null)delete S.tier[id];else S.tier[id]=o;return v}
+const delivPanel=()=>{const L=selTypes();if(!L.length)return '';
+ return `<div class="panel" style="margin-top:18px"><h3>¿Básica o Premium?</h3><p class="sub" style="margin:0 0 4px">Ofrece primero la Básica: lo más importante, a un precio que el negocio pueda pagar. La Premium suma más cosas y más valor.${L.length>1?' El precio es el del proyecto completo.':''}</p>
+ ${L.map(t=>`<h4 class="tierh">${t.n}</h4><div class="opts tiers">${['b','p'].map(k=>`<button type="button" class="opt" data-tier="${t.id}:${k}" aria-pressed="${t.tl===k}">${TIER[k]}<b class="tp">${money(tierPrice(t.id,k))}</b><small>${t[k].inc.map(i=>'✓ '+i).join('<br>')}</small><span class="h">unas ${t[k].h} horas</span></button>`).join('')}</div>`).join('')}</div>`};
+function delivHTML(){const L=selTypes();if(!L.length)return '';const ex=extraFeats();
+ return `<div class="deliv">${L.map(t=>`<div><h4>${t.n} · ${TIER[t.tl]}</h4><ul>${t.inc.map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('')}${ex.length?`<div><h4>Extras</h4><ul>${ex.map(f=>`<li>${f.n}</li>`).join('')}</ul></div>`:''}</div><p class="sub" style="margin:10px 0 0">Siempre incluye: ${ALWAYS}</p>`}
 function stepFeats(){const t=type();return wrapQ(3,'¿Qué más lleva?',`Marca todo lo que el cliente quiere que tenga su ${t.many?'proyecto':t.n.toLowerCase()}. Si no lleva nada extra, sigue.`,'Mientras más cosas lleve, más horas te toma y más sube el precio. Las que trabajan todos los meses (como la IA o los avisos) también suben la mensualidad: te toca cuidarlas y cada uso cuesta.',
- `<div class="opts">${FEATURES.map(f=>`<button type="button" class="opt" data-f="${f.id}" aria-pressed="${S.feats.includes(f.id)}">${f.n}<small>${f.d}</small><span class="h">+${f.h} h${f.m?' · sube la mensualidad':''}</span></button>`).join('')}</div>
+ `<div class="opts">${(I=>FEATURES.map(f=>I.has(f.id)?`<button type="button" class="opt" aria-pressed="true" disabled style="cursor:default;opacity:.75">${f.n}<small>${f.d}</small><span class="h">ya viene en la versión Premium</span></button>`:`<button type="button" class="opt" data-f="${f.id}" aria-pressed="${S.feats.includes(f.id)}">${f.n}<small>${f.d}</small><span class="h">+${f.h} h${f.m?' · sube la mensualidad':''}</span></button>`).join(''))(incF())}</div>
  <div class="cx" id="cx" aria-live="polite"></div>`)}
 function cxBox(){const x=complexity();if(!x)return '';const msg=['Proyecto sencillo: lo básico, pocas sorpresas.','Proyecto mediano: lleva varias piezas que hay que conectar.','Proyecto complejo: muchas piezas. Cobra bien y deja tiempo para pruebas.'][x.lvl];
  return `<div class="cxbar"><i style="left:${x.pos}%"></i></div><div class="cxscale"><span>Baja</span><span>Media</span><span>Alta</span></div><p class="cxtxt">Complejidad <b style="color:${css(['--z-good','--z-fair','--z-lose'][x.lvl])}">${x.name}</b>: ${x.base} h de base + ${x.extra} h por los extras = <b>${x.base+x.extra} horas</b>. ${msg}</p>`}
@@ -420,7 +454,8 @@ function render(){if(S.step>0&&!S.country)S.step=0;if(S.step>1&&!hasType())S.ste
  $('stage').innerHTML=[stepCountry,stepType,stepFeats,stepMaint,stepPay,stepValue,stepResult][S.step]();
  if(S.step===2)$('cx').innerHTML=cxBox();if(S.step===3)$('mnt').innerHTML=mntHTML();if(S.step===1)$('deliv').innerHTML=delivPanel();
  bindStep();bindNav();live();save()}
-function bindStep(){const st=$('stage');const press=(sel,on)=>st.querySelectorAll(sel).forEach(x=>x.setAttribute('aria-pressed',on(x)));
+function bindStep(){const st=$('stage');
+ st.onclick=e=>{const b=e.target.closest('[data-tier]');if(!b)return;const [id,k]=b.dataset.tier.split(':');S.tier={...S.tier,[id]:k};S.price=null;delete S.ov.hours;delete S.ov.mhours;delete S.ov.infra;$('deliv').innerHTML=delivPanel();live();save()};const press=(sel,on)=>st.querySelectorAll(sel).forEach(x=>x.setAttribute('aria-pressed',on(x)));
  st.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{const id=b.dataset.t;S.types=S.types.includes(id)?S.types.filter(x=>x!==id):[...S.types,id];S.price=null;delete S.ov.hours;press('[data-t]',x=>S.types.includes(x.dataset.t));$('deliv').innerHTML=delivPanel();progress();bindNav();live();save()});
  st.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const f=b.dataset.f;S.feats=S.feats.includes(f)?S.feats.filter(x=>x!==f):[...S.feats,f];S.price=null;delete S.ov.hours;delete S.ov.mhours;delete S.ov.infra;b.setAttribute('aria-pressed',S.feats.includes(f));$('cx').innerHTML=cxBox();live();save()});
  st.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{S.level=b.dataset.l;S.price=null;delete S.ov.rate;press('[data-l]',x=>x.dataset.l===S.level);if(country())$('cnote').innerHTML=countryNote(country());live();save()});
@@ -495,7 +530,7 @@ function updResult(fromNum){const r=compute();const c=country();const t=type();c
  const pr=$('pRange');pr.max=Math.ceil(Z.top/10)*10;pr.value=p;if(!fromNum)$('pNum').value=p;
  const m=S.market;$('mktTxt').innerHTML=!m?'':m<r.floor?`Otros cobran ${money(m)}, menos que tu piso (${money(r.floor)}). No bajes de tu piso: cobra por lo que incluyes (seguridad, soporte, mensualidad) o reduce lo que lleva el proyecto.`:m<r.rec?`Otros cobran ${money(m)}. Puedes acercarte a ese precio sin bajar de tu piso (${money(r.floor)}), o explicar qué incluyes que otros no.`:`Otros cobran ${money(m)}, más que tu recomendado. Tienes espacio para subir tu precio.`;
  drawGauge(p,Z);$('mntR').innerHTML=mntHTML();$('pill').textContent=zone[3];$('pill').style.background=css(zone[2]);$('vtext').textContent=zone[4];
- const cnt=S.feats.length;const mine=k=>S.ov[k]!=null?' (lo cambiaste tú)':'';
+ const cnt=extraFeats().length;const mine=k=>S.ov[k]!=null?' (lo cambiaste tú)':'';
  $('recipe').innerHTML=`
  <li><div class="t">Las horas: ${x.base} de base${t.many?` (${t.count} servicios)`:''}${cnt?` + ${x.extra} por ${cnt} extra${cnt>1?'s':''}`:''}${mine('hours')}<div class="m">${r.hours} horas</div></div></li>
  <li><div class="t">Tu hora para un cliente en ${c[1]}<small>$${baseRate()} de EE.UU. (${LEVELS[S.level].n.toLowerCase()}) ajustados al nivel de precios del país${mine('rate')}</small><div class="m">${rmoney(suggestedRate(c))} la hora</div></div></li>
@@ -515,13 +550,13 @@ function updResult(fromNum){const r=compute();const c=country();const t=type();c
  const rows=COUNTRIES.map(cn=>({cn,r:compute(cn)}));const max=Math.max(...rows.map(o=>o.r.rec));
  $('table').innerHTML=`<thead><tr><th>País</th><th>Tu hora</th><th>Precio recomendado</th><th>En su moneda</th><th>Mensualidad</th><th>Cómo cobrar</th></tr></thead><tbody>`+rows.map(({cn,r})=>`<tr class="${cn[0]===S.country?'me':''}"><td>${cn[1]}</td><td>${rmoney(r.rate)}</td><td><span class="bar" style="width:${Math.round(60*r.rec/max)}px"></span>${money(r.rec)}</td><td>${cn[3]&&cn[4]!=='USD'?money(r.rec*cn[3],cn[4]):'—'}</td><td>${money(r.monthly)}</td><td style="text-align:left">${cn[5].map(k=>PAY[k].n.split(' (')[0]).join(' · ')}</td></tr>`).join('')+'</tbody>';
  save()}
-function copy(){const r=compute();const t=type();const p=price();const inc=FEATURES.filter(f=>S.feats.includes(f.id)).map(f=>f.n).join(', ');
- const del=TYPES.filter(x=>S.types.includes(x.id)).map(x=>`\n${x.n}:\n`+x.inc.map(i=>'  • '+i).join('\n')).join('');
+function copy(){const r=compute();const t=type();const p=price();const inc=extraFeats().map(f=>f.n).join(', ');
+ const del=selTypes().map(x=>`\n${x.n} (${TIER[x.tl]}):\n`+x.inc.map(i=>'  • '+i).join('\n')).join('');
  const txt=`Cotización · ${t.n}\n\nLo que se entrega:${del}${inc?'\nExtras: '+inc:''}\nSiempre incluye: ${ALWAYS}\n${r.pack?'\nPor separado: '+money(Math.ceil(r.solo/10)*10)+' · Precio de paquete (−'+r.pack+'%):':'\nPrecio de construcción:'} ${money(p)}${loc(p)?' ('+loc(p)+')':''}\nMensualidad, plan ${r.M.plan.n}: ${money(r.monthly)}${loc(r.monthly)?' ('+loc(r.monthly)+')':''}\nLa mensualidad incluye:\n${r.M.plan.inc.map(i=>'  • '+i).join('\n')}${r.M.usage.length?'\nUso incluido al mes: '+r.M.usage.map(u=>u.q.toLocaleString('es')+' '+u.n).join(', ')+'\nSi pasa de ahí: '+r.M.usage.map(u=>'$'+u.extra.toFixed(2)+' por '+u.u+' extra').join(', '):''}\nNo incluye: ${NOTINC}\nLa mensualidad empieza cuando la app ya está en uso.\nTotal del primer año: ${money(p+r.monthly*12)}\nForma de pago: ${PAY[S.pay].n}`;
  const fb=()=>{$('fallback').hidden=false;$('fallback').value=txt;$('fallback').select();$('copied').textContent='Selecciona el texto y cópialo.'};
  try{navigator.clipboard.writeText(txt).then(()=>{$('copied').textContent='Copiado. Pégalo en tu mensaje o cotización.'},fb)}catch(e){fb()}}
 
-$('demo').onclick=()=>{S=Object.assign(fresh(),{step:6,types:['app'],feats:['notify','admin'],plan:'std',vol:1,country:'COL',pay:'transfer',value:200});render();go(6)};
+$('demo').onclick=()=>{S=Object.assign(fresh(),{step:6,types:['app'],tier:{app:'b'},feats:[],plan:'basic',vol:1,country:'COL',pay:'transfer',value:200});render();go(6)};
 $('restart').onclick=()=>{S=fresh();go(0)};
 const redraw=()=>{if(S.step===6)updResult();else if(S.step===2)$('cx').innerHTML=cxBox()};
 matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',redraw);new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
