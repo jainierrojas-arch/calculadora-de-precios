@@ -338,7 +338,7 @@ const FEATURES=[
  {id:'reports',n:'Reportes y gráficas',d:'números del negocio',h:12},
  {id:'lang',n:'Varios idiomas',d:'español, inglés…',h:10},
 ];
-const STEPS=['País','Qué haces','Qué lleva','Mensualidad','Pago','Valor','Resultado','Contrato'];
+const STEPS=['País','Qué haces','Qué lleva','Mensualidad','Pago','Valor','Resultado','Documentos'];
 const DEF={doc:{},saveH:null,salary:null,hpw:null,step:0,level:'start',types:[],tier:{},feats:[],plan:'std',vol:1,country:null,pay:null,foreign:false,value:null,price:null,market:null,ov:{}};
 const fresh=()=>JSON.parse(JSON.stringify(DEF));
 // ===== Mensualidad: servicios que pagas tú + uso incluido + tus horas cuidándola + ganancia =====
@@ -572,7 +572,7 @@ function stepResult(){return `<section class="card"><div class="qnum">Tu cotizac
  <details><summary>Ajustar los números (si ya sabes cuánto te toma o cuánto cobras)</summary><div class="dbody"><div class="fields">${ADV.map(([k,n,u])=>`<label>${n}<span>${u}</span><input type="number" data-a="${k}" min="0" step="any" inputmode="decimal"><button class="reset" type="button" data-r="${k}">usar el automático</button></label>`).join('')}</div></div></details>
  <details><summary>¿Y si el cliente estuviera en otro país?</summary><div class="dbody"><p class="sub">El mismo proyecto, con la tarifa ajustada a cada país.</p><div class="tablewrap"><table id="table"></table></div></div></details>
  <div class="nav"><button class="btn ghost" type="button" id="back">Atrás</button><button class="btn ghost" type="button" id="again">Hacer otra cotización</button></div>
- <div class="panel" style="margin-top:20px;text-align:center"><h3>¿Listo para mandárselo?</h3><p class="sub" style="margin:4px 0 14px">Arma la cotización y el contrato con tus datos y los del cliente, y descárgalos en PDF.</p><button class="btn" type="button" id="toDoc">Armar cotización y contrato</button></div></section>`}
+ <div class="panel" style="margin-top:20px;text-align:center"><h3>¿Listo para mandárselo?</h3><p class="sub" style="margin:4px 0 14px">Arma la cotización, el contrato y la factura con tus datos y los del cliente, y descárgalos en PDF.</p><button class="btn" type="button" id="toDoc">Armar los documentos</button></div></section>`}
 function bindResult(){$('pRange').addEventListener('input',e=>{S.price=+e.target.value;$('pNum').value=S.price;updResult()});
  $('pNum').addEventListener('input',e=>{const v=parseFloat(e.target.value);S.price=isFinite(v)?v:0;updResult(true)});
  $('useRec').onclick=()=>{S.price=null;updResult()};
@@ -682,39 +682,81 @@ function docHTML(){const me=loadMe(),cl=(S.doc.cli||{}),r=compute(),M=r.M,p=pric
  <p>Se firma en ${esc(cl.city||me.city||'________')}, el ${today}.</p>
  <div class="sign"><div>${esc(me.name||'EL PROVEEDOR')}${me.company?'<br>'+esc(me.company):''}<br><span class="small">${me.id?'Doc. '+esc(me.id):'Documento:'}</span></div><div>${esc(cl.rep||'EL CLIENTE')}${cl.name?'<br>'+esc(cl.name):''}<br><span class="small">${cl.id?'Doc. '+esc(cl.id):'Documento:'}</span></div></div>
  <p class="small" style="margin-top:28px">Anexo A: la cotización de las páginas anteriores.</p>`}
-function stepDoc(){const me=loadMe(),cl=S.doc.cli||{};
+
+// ===== Factura / cuenta de cobro (va después del contrato: se hace una por cada pago) =====
+const INVDEF={due:5,tax:0};
+const I_=k=>((S.doc.inv||{})[k]??INVDEF[k]);
+const invNum=()=>{const v=(S.doc.inv||{}).num;if(v)return v;const n=parseInt(loadMe().invNext||1);return String(n).padStart(3,'0')};
+function invItems(){const r=compute(),p=price(),sch=SCHEMES[D('scheme')],o=[];
+ sch.p.forEach(([pc,when],i)=>o.push({k:'c'+i,n:`Pago ${i+1} de ${sch.p.length} · ${pc}% de la construcción · ${when.toLowerCase()}`,v:p*pc/100}));
+ if(r.monthly)o.push({k:'m',n:`Mensualidad · plan ${r.M.plan.n}`,v:r.monthly});
+ o.push({k:'x',n:'Otro concepto (lo escribes tú)',v:null});return o}
+function invHTML(){const me=loadMe(),cl=S.doc.cli||{},t=type(),inv=S.doc.inv||{};
+ const items=invItems(),it=items.find(x=>x.k===(inv.item||'c0'))||items[0];
+ const concept=it.k==='x'?(inv.cn||'________________'):it.n+(it.k==='m'&&inv.month?` · ${esc(inv.month)}`:'');
+ const val=it.k==='x'?(parseFloat(inv.cv)||0):it.v;const tax=I_('tax'),taxV=val*tax/100,tot=val+taxV;
+ const M$=v=>money(v)+(loc(v)?` (${loc(v)})`:'');
+ const f=d=>d.toLocaleDateString('es',{day:'numeric',month:'long',year:'numeric'});
+ const em=inv.date?new Date(inv.date+'T12:00'):new Date();const due=new Date(em.getTime()+I_('due')*864e5);
+ const proj=esc(S.doc.proj||t.n);
+ return `<h1>Factura</h1><p class="meta">N.º ${esc(invNum())} · ${f(em)}</p>
+ <table><tr><th>De</th><th>Para</th></tr><tr><td>${esc(me.name||'________________')}${me.company?'<br>'+esc(me.company):''}${me.id?'<br>Doc. '+esc(me.id):''}${me.city?'<br>'+esc(me.city):''}${me.email?'<br>'+esc(me.email):''}${me.phone?'<br>'+esc(me.phone):''}</td><td>${esc(cl.name||'________________')}${cl.rep?'<br>Atención: '+esc(cl.rep):''}${cl.id?'<br>Doc. '+esc(cl.id):''}${cl.city?'<br>'+esc(cl.city):''}${cl.email?'<br>'+esc(cl.email):''}${cl.phone?'<br>'+esc(cl.phone):''}</td></tr></table>
+ <h2>Detalle</h2>
+ <table><tr><th>Concepto</th><th class="n">Valor</th></tr>
+ <tr><td>${concept}<br><span class="small">Proyecto: ${proj}</span></td><td class="n">${M$(val)}</td></tr>
+ ${tax?`<tr><td>Subtotal</td><td class="n">${M$(val)}</td></tr><tr><td>Impuesto (${tax}%)</td><td class="n">${M$(taxV)}</td></tr>`:''}
+ <tr><td><b>Total a pagar</b></td><td class="n"><b>${M$(tot)}</b></td></tr></table>
+ <p><b>Pagar antes del:</b> ${f(due)}</p>
+ <p><b>Forma de pago:</b> ${esc(PAY[S.pay]?PAY[S.pay].n:'________')}${me.paydata?'<br>'+esc(me.paydata):''}</p>
+ ${inv.note?`<p>${esc(inv.note)}</p>`:''}
+ <p class="small">Este cobro corresponde al contrato de prestación de servicios del proyecto «${proj}». Si tu país te exige factura electrónica oficial, emítela también en el sistema de tu país: este documento sirve como cuenta de cobro.</p>`}
+function stepDoc(){const me=loadMe(),cl=S.doc.cli||{};const kind=S.doc.kind||'cc',inv=S.doc.inv||{};
  const inp=(grp,k,lab,v,type)=>`<label>${lab}<input type="${type||'text'}" data-g="${grp}" data-k="${k}" value="${esc(v??'')}" autocomplete="off"></label>`;
  const num=(k,lab,u)=>`<label>${lab}<span>${u}</span><input type="number" min="0" step="1" data-g="rule" data-k="${k}" value="${D(k)}"></label>`;
- return `<section class="card docform"><div class="qnum">Cotización y contrato</div><h2>Arma el documento para tu cliente</h2>
- <p class="sub">Llena tus datos y los del cliente. La hoja de abajo se arma sola, en blanco y negro y sin logos, lista para firmar.</p>
- <div class="why">${lab('Importante')}Los precios son un <b>estimado</b> y este contrato es una <b>guía</b> escrita en palabras sencillas, no asesoría legal. Revísalo, cámbialo a tu caso y, si el proyecto es grande, pásalo por un abogado de tu país.</div>
+ return `<section class="card docform"><div class="qnum">Documentos</div><h2>Arma el documento para tu cliente</h2>
+ <div class="chips" style="margin:6px 0 14px"><button type="button" class="chip" data-kind="cc" aria-pressed="${kind==='cc'}">1 · Cotización y contrato</button><button type="button" class="chip" data-kind="inv" aria-pressed="${kind==='inv'}">2 · Factura (cuenta de cobro)</button></div>
+ <p class="sub">${kind==='cc'?'Primero la cotización y el contrato: llena tus datos y los del cliente. La hoja de abajo se arma sola, en blanco y negro y sin logos, lista para firmar.':'Después de firmar, cobras con una factura por cada pago: el anticipo, el pago final o la mensualidad. Usa los mismos datos del contrato.'}</p>
+ <div class="why">${lab('Importante')}${kind==='inv'?'Esta factura sirve como <b>cuenta de cobro</b>. En muchos países la factura oficial se hace en el sistema del gobierno (factura electrónica): si te toca, emítela también allí. Si no sabes si debes cobrar impuesto, pregúntale a un contador de tu país.':'Los precios son un <b>estimado</b> y este contrato es una <b>guía</b> escrita en palabras sencillas, no asesoría legal. Revísalo, cámbialo a tu caso y, si el proyecto es grande, pásalo por un abogado de tu país.'}</div>
  <fieldset><legend>Tus datos</legend><div class="fields">${PF.map(([k,l])=>inp('me',k,l,me[k],k==='email'?'email':'text')).join('')}</div><p class="sub" style="margin:10px 0 0;font-size:13px">Se guardan solo en este navegador, para la próxima vez.</p></fieldset>
  <fieldset><legend>Datos del cliente</legend><div class="fields">${CF.map(([k,l])=>inp('cli',k,l,cl[k],k==='email'?'email':'text')).join('')}</div></fieldset>
- <fieldset><legend>El proyecto</legend><div class="fields">${inp('doc','proj','Nombre del proyecto',S.doc.proj||'')}
+ ${kind==='inv'?`<fieldset><legend>La factura</legend><div class="fields">${inp('inv','num','Número de factura',invNum())}${inp('inv','date','Fecha',inv.date||'','date')}
+  <label>Qué cobras<select data-g="inv" data-k="item">${invItems().map(x=>`<option value="${x.k}" ${(inv.item||'c0')===x.k?'selected':''}>${esc(x.n)}${x.v!=null?' — '+money(x.v):''}</option>`).join('')}</select></label>
+  ${(inv.item==='m')?inp('inv','month','Mes que cobras (ej.: noviembre 2026)',inv.month||''):''}
+  ${(inv.item==='x')?inp('inv','cn','Concepto',inv.cn||'')+`<label>Valor<span>en dólares</span><input type="number" min="0" step="1" data-g="inv" data-k="cv" value="${esc(inv.cv??'')}"></label>`:''}
+  <label>Días para pagar<span>sugerido: ${INVDEF.due}</span><input type="number" min="0" step="1" data-g="inv" data-k="due" value="${I_('due')}"></label>
+  <label>Impuesto, si te toca cobrarlo<span>%</span><input type="number" min="0" step="0.5" data-g="inv" data-k="tax" value="${I_('tax')}"></label>
+  ${inp('me','paydata','Datos para pagarte (banco, cuenta o enlace de pago)',me.paydata)}
+  ${inp('inv','note','Nota (opcional)',inv.note||'')}</div><p class="sub" style="margin:10px 0 0;font-size:13px">El número sube solo cada vez que descargas una factura. Los datos para pagarte se guardan en este navegador.</p></fieldset>`:''}
+ <fieldset ${kind==='inv'?'hidden':''}><legend>El proyecto</legend><div class="fields">${inp('doc','proj','Nombre del proyecto',S.doc.proj||'')}
   ${inp('doc','start','Fecha de inicio',S.doc.start||'','date')}
   <label>Semanas de trabajo<span>sugerido: ${weeksAuto()} (unas 20 h por semana)</span><input type="number" min="1" step="1" data-g="doc" data-k="weeks" value="${S.doc.weeks||''}" placeholder="${weeksAuto()}"></label>
   <label>Cómo te paga la construcción<select data-g="doc" data-k="scheme">${Object.entries(SCHEMES).map(([k,v])=>`<option value="${k}" ${D('scheme')===k?'selected':''}>${v.n}</option>`).join('')}</select></label>
   ${inp('doc','venue','Leyes de qué país aplican',S.doc.venue||'')}</div></fieldset>
- <fieldset><legend>Tus reglas</legend><p class="sub" style="margin:0 0 10px;font-size:14px">Vienen con una sugerencia. Cámbialas a como trabajas tú.</p><div class="fields">
+ <fieldset ${kind==='inv'?'hidden':''}><legend>Tus reglas</legend><p class="sub" style="margin:0 0 10px;font-size:14px">Vienen con una sugerencia. Cámbialas a como trabajas tú.</p><div class="fields">
   ${num('valid','Validez de la cotización','días')}${num('rounds','Rondas de ajustes por entrega','rondas')}${num('review','Días para revisar cada entrega','días hábiles')}${num('warranty','Garantía después de entregar','días')}${num('pause','Pausa si un pago se atrasa más de','días')}${num('notice','Aviso para terminar la mensualidad','días')}</div></fieldset>
- <div class="nav" style="border-top:0;padding-top:0;margin-top:0"><button class="btn ghost" type="button" id="back">Atrás</button><button class="btn" type="button" id="pdf">Descargar PDF</button></div>
+ <div class="nav" style="border-top:0;padding-top:0;margin-top:0"><button class="btn ghost" type="button" id="back">Atrás</button><button class="btn" type="button" id="pdf">${kind==='inv'?'Descargar factura en PDF':'Descargar PDF'}</button></div>
  <p class="sub" style="margin:12px 0 0;font-size:13.5px">Al tocar «Descargar PDF», elige <b>Guardar como PDF</b> en la ventana que se abre. También puedes corregir cualquier texto tocándolo en la hoja (hazlo al final: si cambias el formulario, la hoja se vuelve a armar).</p>
  <div class="paper" id="docPrev" contenteditable="true" spellcheck="false"></div></section>`}
-function bindDoc(){const prev=()=>{$('docPrev').innerHTML=docHTML()};
+function bindDoc(){const kind=S.doc.kind||'cc';const prev=()=>{$('docPrev').innerHTML=kind==='inv'?invHTML():docHTML()};
+ document.querySelectorAll('.docform [data-kind]').forEach(b=>b.onclick=()=>{S.doc.kind=b.dataset.kind;save();render()});
  document.querySelectorAll('.docform [data-g]').forEach(i=>i.addEventListener('input',()=>{const g=i.dataset.g,k=i.dataset.k,v=i.value.trim();
   if(g==='me'){const me=loadMe();me[k]=v;saveMe(me)}
   else if(g==='cli'){S.doc.cli={...(S.doc.cli||{}),[k]:v}}
   else if(g==='rule'){const n=parseFloat(v);if(isFinite(n)&&n>=0)S.doc[k]=n;else delete S.doc[k]}
+  else if(g==='inv'){const o={...(S.doc.inv||{})};if(['due','tax'].includes(k)){const n=parseFloat(v);if(isFinite(n)&&n>=0)o[k]=n;else delete o[k]}else o[k]=v;S.doc.inv=o;
+   if(k==='item'){save();render();return}}
   else if(k==='weeks'){const n=parseInt(v);if(n>0)S.doc.weeks=n;else delete S.doc.weeks}
   else S.doc[k]=v;
   prev();save()}));
  $('back').onclick=()=>go(6);
- $('pdf').onclick=()=>{$('printroot').innerHTML=$('docPrev').innerHTML;const t=document.title;document.title=('Cotizacion y contrato - '+((S.doc.cli||{}).name||type().n)).replace(/[\\/:*?"<>|]/g,'');window.print();document.title=t};
+ $('pdf').onclick=()=>{$('printroot').innerHTML=$('docPrev').innerHTML;const t=document.title;const nm=(S.doc.cli||{}).name||type().n;
+  document.title=(kind==='inv'?'Factura '+invNum()+' - '+nm:'Cotizacion y contrato - '+nm).replace(/[\\/:*?"<>|]/g,'');window.print();document.title=t;
+  if(kind==='inv'){const me=loadMe(),n=parseInt(invNum());if(isFinite(n)){me.invNext=n+1;saveMe(me);const o={...(S.doc.inv||{})};delete o.num;S.doc.inv=o;save();setTimeout(()=>render(),300)}}};
  prev()}
 
 $('demo').onclick=()=>{S=Object.assign(fresh(),{step:6,types:['app'],tier:{app:'b'},feats:[],plan:'basic',vol:1,country:'COL',pay:'transfer',value:50,saveH:5});render();go(6)};
 $('restart').onclick=()=>{S=fresh();go(0)};
-const redraw=()=>{if(S.step===7&&$('docPrev'))$('docPrev').innerHTML=docHTML();if(S.step===6)updResult();else if(S.step===2)$('cx').innerHTML=cxBox()};
+const redraw=()=>{if(S.step===7&&$('docPrev'))$('docPrev').innerHTML=(S.doc.kind==='inv'?invHTML():docHTML());if(S.step===6)updResult();else if(S.step===2)$('cx').innerHTML=cxBox()};
 matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',redraw);new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 load();render();
 </script>
