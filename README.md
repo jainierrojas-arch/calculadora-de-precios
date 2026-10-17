@@ -28,4 +28,26 @@ No necesita instalar nada: es un solo archivo.
 2. Abre `index.html` con tu navegador. Ya funciona, incluso sin internet para los cálculos.
 3. ¿La quieres en tu propia dirección web? Arrastra la carpeta a [Netlify Drop](https://app.netlify.com/drop) y te da un enlace gratis.
 
+## Cámbiala a tu gusto
+
+Todo está en `index.html`. Busca (Ctrl/Cmd + F) estos nombres para encontrar cada parte:
+
+| Quieres cambiar… | Busca |
+|---|---|
+| Tu marca y logo (arriba y en el pie) | `class="top"` y `<footer` |
+| Los colores | `:root` (variables `--red`, `--paper`, `--ink`…) |
+| Tu tarifa por hora según tu experiencia | `const LEVELS` |
+| Países, monedas y formas de pago | `const COUNTRIES` y `const PAY` |
+| Qué servicios ofreces y sus horas | `const TYPES` y `const FEATURES` |
+| Costos de la mensualidad (dominio, hosting…) | `DOMAIN_Y`, `NETLIFY` y `const PLANS` |
+| Ajuste por IA y descuentos por paquete | `const AICUT` y `const PACK` |
+| Reglas del contrato (rondas, garantía, plazos) | `const DOCDEF` y `const SCHEMES` |
+| Textos del contrato, la cotización o la factura | `Cotización + contrato` y `Factura / cuenta de cobro` |
+
+¿No sabes programar? Abre `index.html` con Claude o ChatGPT y pídeselo con tus palabras, por ejemplo: *"cambia los colores a azul y pon mi logo arriba"*.
+
+## Licencia
+
+[MIT](LICENSE): úsala, cámbiala y compártela como quieras, también en tu trabajo. Solo deja el aviso de la licencia con el crédito original.
+
 > Es una guía: el contrato no reemplaza a un abogado, y si en tu país es obligatoria la factura electrónica, emítela también en el sistema oficial.
