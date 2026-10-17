@@ -43,6 +43,7 @@ h1 .o{display:block;color:transparent;-webkit-text-stroke:1.5px var(--ink)}
 .btn{font:700 14px var(--body);padding:12px 18px;border-radius:10px;border:0;background:linear-gradient(120deg,var(--red),var(--red2));color:#fff;cursor:pointer;box-shadow:0 8px 24px -10px rgba(232,57,30,.7)}
 .btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line);box-shadow:none}
 .btn.ghost:hover{border-color:var(--muted)}
+.vid{border:0;padding:0;background:transparent;width:min(960px,94vw);max-width:none}.vid::backdrop{background:rgba(0,0,0,.8)}.vid video{display:block;width:100%;aspect-ratio:16/9;border-radius:14px;background:#000}.vid .x{display:block;margin:0 0 10px auto;font:700 14px var(--body);padding:10px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.5);color:#fff;cursor:pointer}
 .btn:disabled{opacity:.35;cursor:default;box-shadow:none}
 button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .progress{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
@@ -209,6 +210,7 @@ footer.src a{color:var(--ink)}
   <h1><span class="r">¿Cuánto le cobro</span> <span class="o">a mi cliente?</span></h1>
   <p class="lede">Responde 6 preguntas sencillas. A la derecha vas viendo cómo cambia el precio con cada respuesta, y al final te explicamos de dónde sale cada número.</p>
   <div class="example">
+    <button class="btn" type="button" id="verVideo">▶ Mira cómo funciona (2:30)</button>
     <button class="btn ghost" type="button" id="demo">Ver un ejemplo: app de reservas para una barbería en Colombia</button>
     <button class="btn ghost" type="button" id="restart">Empezar de cero</button>
   </div>
@@ -760,5 +762,7 @@ const redraw=()=>{if(S.step===7&&$('docPrev'))$('docPrev').innerHTML=(S.doc.kind
 matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',redraw);new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 load();render();
 </script>
+<dialog class="vid" id="vid" aria-label="Video: cómo funciona la calculadora"><button class="x" type="button" id="vidX">Cerrar ✕</button><video id="vidV" controls playsinline preload="none" poster="como-funciona.jpg"><source src="como-funciona.mp4" type="video/mp4"></video></dialog>
+<script>(()=>{const d=document.getElementById('vid'),v=document.getElementById('vidV');document.getElementById('verVideo').onclick=()=>{d.showModal();v.play().catch(()=>{})};const c=()=>{v.pause();d.close()};document.getElementById('vidX').onclick=c;d.addEventListener('click',e=>{if(e.target===d)c()});d.addEventListener('close',()=>v.pause())})();</script>
 </body>
 </html>
